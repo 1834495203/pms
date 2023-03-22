@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.form.mapper.EstateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.form.model.po.Estate">
+        <id column="eid" property="eid" />
+        <result column="building" property="building" />
+        <result column="unit" property="unit" />
+        <result column="floor" property="floor" />
+        <result column="in_charge_id" property="inChargeId" />
+        <result column="total" property="total" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        eid, building, unit, floor, in_charge_id, total
+    </sql>
+
+</mapper>

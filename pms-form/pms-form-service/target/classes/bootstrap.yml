@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: form-service
+  cloud:
+    nacos:
+      discovery:
+        namespace: mahiro
+        group: mahiro
+      config:
+        namespace: mahiro
+        group: mahiro
+        file-extension: yaml
+        refresh-enabled: true
+        shared-configs:
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: common
+            refresh: true

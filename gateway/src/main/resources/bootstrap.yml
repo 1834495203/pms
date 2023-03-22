@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: mahiro
+        group: mahiro
+      config:
+        namespace: mahiro
+        group: mahiro
+        file-extension: yaml
+        refresh-enabled: true
+#        shared-configs:
+#          - data-id: logging-${spring.profiles.active}.yaml
+#            group: os
+#            refresh: true
+  profiles:
+    active: dev

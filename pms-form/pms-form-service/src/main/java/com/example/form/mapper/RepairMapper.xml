@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.form.mapper.RepairMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.form.model.po.Repair">
+        <id column="rid" property="rid" />
+        <result column="content" property="content" />
+        <result column="state" property="state" />
+        <result column="create_time" property="createTime" />
+        <result column="pubilsher_id" property="pubilsherId" />
+        <result column="in_charge_id" property="inChargeId" />
+        <result column="profile" property="profile" />
+        <result column="solved_time" property="solvedTime" />
+        <result column="facility_id" property="facilityId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        rid, content, state, create_time, pubilsher_id, in_charge_id, profile, solved_time, facility_id
+    </sql>
+
+</mapper>

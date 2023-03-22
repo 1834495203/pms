@@ -1,0 +1,13 @@
+### 测试登录用户权限获取
+GET{{form_host}}/form/test
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwiYXV0aCI6IjkxMDkwIiwic3ViIjoie1widXNlcm5hbWVcIjpcIkFsaWNlXCIsXCJwYXNzd29yZFwiOlwiZTEwYWRjMzk0OWJhNTlhYmJlNTZlMDU3ZjIwZjg4M2VcIn0iLCJpYXQiOjE2Nzk0OTIxNDEsImV4cCI6MTY3OTQ5OTM0MX0.hhtzJR6SMJWsi98wVsJhlw8SRPGSv6XDyYcHw0qSGaq15HBvv9NwuYHtLExo8bGYRnXjO50CPs7GwsSON03GTg
+
+### 发送投诉信息
+POST {{form_host}}/form/complaint
+#token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwiYXV0aCI6IjkxMDkwIiwic3ViIjoie1widXNlcm5hbWVcIjpcIkFsaWNlXCIsXCJwYXNzd29yZFwiOlwiZTEwYWRjMzk0OWJhNTlhYmJlNTZlMDU3ZjIwZjg4M2VcIn0iLCJpYXQiOjE2Nzk0OTIxNDEsImV4cCI6MTY3OTQ5OTM0MX0.hhtzJR6SMJWsi98wVsJhlw8SRPGSv6XDyYcHw0qSGaq15HBvv9NwuYHtLExo8bGYRnXjO50CPs7GwsSON03GTg
+Content-Type: application/json
+
+{
+  "title": "测试投诉标题",
+  "content": "测试投诉内容"
+}

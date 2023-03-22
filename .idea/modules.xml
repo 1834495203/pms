@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms.iml" filepath="$PROJECT_DIR$/pms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-auth/pms-auth.iml" filepath="$PROJECT_DIR$/pms-auth/pms-auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-base/pms-base.iml" filepath="$PROJECT_DIR$/pms-base/pms-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form.iml" filepath="$PROJECT_DIR$/pms-form/pms-form.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form-api/pms-form-api.iml" filepath="$PROJECT_DIR$/pms-form/pms-form-api/pms-form-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form-model/pms-form-model.iml" filepath="$PROJECT_DIR$/pms-form/pms-form-model/pms-form-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form-service/pms-form-service.iml" filepath="$PROJECT_DIR$/pms-form/pms-form-service/pms-form-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-generator/pms-generator.iml" filepath="$PROJECT_DIR$/pms-generator/pms-generator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-parent/pms-parent.iml" filepath="$PROJECT_DIR$/pms-parent/pms-parent.iml" />
+    </modules>
+  </component>
+</project>

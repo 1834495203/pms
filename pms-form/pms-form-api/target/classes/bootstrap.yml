@@ -1,0 +1,36 @@
+server:
+  servlet:
+    context-path: /form
+  port: 9292
+spring:
+  profiles:
+    active: dev
+  application:
+    name: form-api
+  cloud:
+    nacos:
+      config:
+        namespace: mahiro
+        group: mahiro
+        file-extension: yaml
+        refresh-enabled: true
+        extension-configs:
+          - data-id: form-service-${spring.profiles.active}.yaml
+            group: mahiro
+            refresh: true
+        shared-configs:
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+          - data-id: swagger-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+          - data-id: jwt-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+      discovery:
+        namespace: mahiro
+        group: mahiro

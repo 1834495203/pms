@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="pms" />
+      </profile>
+      <profile name="Annotation profile for pms-form" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$PROJECT_DIR$/../maven/repository/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar" />
+        </processorPath>
+        <module name="pms-base" />
+        <module name="pms-form-model" />
+        <module name="pms-generator" />
+        <module name="pms-form-service" />
+        <module name="gateway" />
+        <module name="pms-form-api" />
+        <module name="pms-auth" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="gateway" target="1.8" />
+      <module name="pms" target="1.8" />
+      <module name="pms-auth" target="1.8" />
+      <module name="pms-base" target="1.8" />
+      <module name="pms-form" target="1.8" />
+      <module name="pms-form-api" target="1.8" />
+      <module name="pms-form-model" target="1.8" />
+      <module name="pms-form-service" target="1.8" />
+      <module name="pms-generator" target="1.8" />
+      <module name="pms-parent" target="1.8" />
+      <module name="pms-property" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="pms" options="-parameters" />
+      <module name="pms-auth" options="" />
+      <module name="pms-generator" options="" />
+      <module name="pms-parent" options="" />
+    </option>
+  </component>
+</project>

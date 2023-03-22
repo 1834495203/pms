@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.personnel.mapper.AdministratorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.personnel.model.po.Administrator">
+        <id column="aid" property="aid" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="authority" property="authority" />
+        <result column="phone" property="phone" />
+        <result column="age" property="age" />
+        <result column="hiredate" property="hiredate" />
+        <result column="id_card" property="idCard" />
+        <result column="name" property="name" />
+        <result column="gender" property="gender" />
+        <result column="profile" property="profile" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        aid, username, password, authority, phone, age, hiredate, id_card, name, gender, profile
+    </sql>
+
+</mapper>

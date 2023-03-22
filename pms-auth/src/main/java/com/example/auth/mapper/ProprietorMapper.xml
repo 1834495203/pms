@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.auth.mapper.ProprietorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.auth.po.Proprietor">
+        <id column="pid" property="pid" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="age" property="age" />
+        <result column="address" property="address" />
+        <result column="status" property="status" />
+        <result column="check_in_date" property="checkInDate" />
+        <result column="id_card" property="idCard" />
+        <result column="profile" property="profile" />
+        <result column="gender" property="gender" />
+        <result column="property_expense_state" property="propertyExpenseState" />
+        <result column="create_date" property="createDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        pid, username, password, name, phone, age, address, status, check_in_date, id_card, profile, gender, property_expense_state, create_date
+    </sql>
+
+</mapper>

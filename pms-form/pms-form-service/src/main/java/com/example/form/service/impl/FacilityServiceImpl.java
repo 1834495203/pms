@@ -28,7 +28,6 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class FacilityServiceImpl extends ServiceImpl<FacilityMapper, Facility> implements FacilityService {
-
     @Autowired
     private FacilityMapper facilityMapper;
 

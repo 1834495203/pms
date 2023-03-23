@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author GLaDOS
- * @since 2023-03-21
+ * @since 2023-03-23
  */
 public interface BroadcastService extends IService<Broadcast> {
 

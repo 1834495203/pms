@@ -2,13 +2,16 @@ package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
- * 基础设施
+ * 
  * </p>
  *
  * @author GLaDOS
@@ -41,9 +44,35 @@ public class Facility implements Serializable {
     private Integer inChargeId;
 
     /**
-     * 地址
+     * 设施类型
      */
-    private String address;
+    private String type;
+
+    /**
+     * 设施创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createDate;
+
+    /**
+     * 设施所在的楼栋
+     */
+    private String building;
+
+    /**
+     * 设施所在的单元
+     */
+    private String unit;
+
+    /**
+     * 设施所在的部门
+     */
+    private String section;
+
+    /**
+     * 唯一辨识id
+     */
+    private Integer soleId;
 
 
 }

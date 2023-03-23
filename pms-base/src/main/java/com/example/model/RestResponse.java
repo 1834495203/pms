@@ -20,6 +20,11 @@ public class RestResponse<T> {
     private Code code;
 
     /**
+     * 响应编码 数字形式
+     */
+    private Integer type;
+
+    /**
     * 响应提示信息
     */
     private String msg;
@@ -37,6 +42,7 @@ public class RestResponse<T> {
     public RestResponse(Code code, String msg) {
     this.code = code;
     this.msg = msg;
+    this.type = code.getCode();
     }
 
     /**
@@ -49,6 +55,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> validFail(String msg) {
         RestResponse<T> response = new RestResponse<T>();
         response.setCode(Error.FAILED);
+        response.setType(Error.FAILED.getCode());
         response.setMsg(msg);
         return response;
     }
@@ -56,6 +63,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> validFail(String msg, Code code) {
         RestResponse<T> response = new RestResponse<T>();
         response.setCode(code);
+        response.setType(code.getCode());
         response.setMsg(msg);
         return response;
     }
@@ -63,6 +71,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> validFail(T result, String msg) {
         RestResponse<T> response = new RestResponse<T>();
         response.setCode(Error.FAILED);
+        response.setType(Error.FAILED.getCode());
         response.setResult(result);
         response.setMsg(msg);
         return response;
@@ -71,6 +80,7 @@ public class RestResponse<T> {
     public static <T> RestResponse<T> validFail(T result, String msg, Code code) {
         RestResponse<T> response = new RestResponse<T>();
         response.setCode(code);
+        response.setType(code.getCode());
         response.setResult(result);
         response.setMsg(msg);
         return response;
@@ -85,6 +95,7 @@ public class RestResponse<T> {
         RestResponse<T> response = new RestResponse<T>();
         response.setResult(result);
         response.setCode(Valid.SUCCESS);
+        response.setType(Valid.SUCCESS.getCode());
         return response;
     }
 
@@ -93,12 +104,14 @@ public class RestResponse<T> {
         response.setResult(result);
         response.setMsg(msg);
         response.setCode(Valid.SUCCESS);
+        response.setType(Valid.SUCCESS.getCode());
         return response;
     }
 
     public static <T> RestResponse<T> success(T result, String msg, Code code) {
         RestResponse<T> response = new RestResponse<T>();
         response.setCode(code);
+        response.setType(code.getCode());
         response.setResult(result);
         response.setMsg(msg);
         return response;

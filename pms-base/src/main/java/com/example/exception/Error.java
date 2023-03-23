@@ -13,6 +13,8 @@ public enum Error implements Code{
 
 	FAILED(111),
 
+	UNKNOWN_FAILED(222),
+
 	UNAUTHORIZED(401),
 	TOKEN_LOAD_FAILED(777),
 

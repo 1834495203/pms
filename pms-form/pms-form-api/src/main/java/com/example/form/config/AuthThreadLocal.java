@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
  * UserThreadLocalDto包含: id, auth
  */
 @Component
-public class AuthThreadLocal{
+public class AuthThreadLocal {
 
     private static final ThreadLocal<UserThreadLocalDto> authThreadLocal = new ThreadLocal<>();
 

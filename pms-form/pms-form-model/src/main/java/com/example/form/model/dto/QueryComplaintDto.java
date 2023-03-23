@@ -1,6 +1,6 @@
 package com.example.form.model.dto;
 
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class QueryComplaintDto {
+
     /**
      * 状态 已解决? 未解决? 40010, 40011
      */
@@ -18,19 +19,19 @@ public class QueryComplaintDto {
     /**
      * 上报时间
      */
-    @ApiParam(value = "上报时间")
+    @ApiModelProperty(value = "上报时间")
     private LocalDateTime createTime;
 
     /**
      * 查询时间的条件
-     * -1 之前; 0 等于; 1之后
+     * -1 之前; 0 等于; 1 之后
      */
     private Integer queryTime;
 
     /**
      * 标题
      */
-    @ApiParam(value = "标题")
+    @ApiModelProperty(value = "标题")
     private String title;
 
     /**

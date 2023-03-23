@@ -1,28 +1,20 @@
-package com.example.form.model.po;
+package com.example.form.model.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.example.utils.Auth;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
- * <p>
- * 
- * </p>
- *
+ * 更新设施的内容
  * @author GLaDOS
+ * @date 2023/3/23 23:36
  */
 @Data
-@TableName("facility")
-public class Facility implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+@Auth(auth = "90091", exclude = {"fid", "inChargeId"})
+public class UpdateFacilityDto {
 
     /**
      * 基础设施信息id
      */
-    @TableId(value = "fid", type = IdType.AUTO)
     private Integer fid;
 
     /**
@@ -32,24 +24,22 @@ public class Facility implements Serializable {
 
     /**
      * 状态
+     * 前台权限
      */
+    @Auth(auth = "90093")
     private String state;
 
     /**
      * 负责人
+     * 前台权限
      */
+    @Auth(auth = "90093")
     private Integer inChargeId;
 
     /**
      * 设施类型
      */
     private String type;
-
-    /**
-     * 设施创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createDate;
 
     /**
      * 设施所在的楼栋
@@ -65,9 +55,4 @@ public class Facility implements Serializable {
      * 设施所在的部门
      */
     private String section;
-
-    /**
-     * 唯一辨识id
-     */
-    private String soleId;
 }

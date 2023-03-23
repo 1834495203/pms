@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
- * 维修信息
+ * 
  * </p>
  *
  * @author GLaDOS

@@ -3,6 +3,7 @@ package com.example.form.controller;
 import com.example.form.config.AuthThreadLocal;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
+import com.example.form.model.dto.UpdateComplaintDto;
 import com.example.form.model.dto.UserThreadLocalDto;
 import com.example.form.model.po.Complaint;
 import com.example.form.service.ComplaintService;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.function.Predicate;
 
 @Api(value = "投诉接口", tags = "投诉接口")
 @Slf4j
@@ -28,12 +28,13 @@ public class ComplaintController {
     private ComplaintService complaintService;
 
     /**
+     * 插入投诉信息
      * 仅业主能发送投诉(插入), 仅前台和管理员能接收投诉(获取)
      * @param complaint 投诉消息
      * @return RR
      */
     @ApiOperation("业主发送投诉")
-    @RequestMapping(value = "/complaint", method = RequestMethod.POST)
+    @RequestMapping(value = "/complaint", method = RequestMethod.PUT)
     public RestResponse<Complaint> postComplaint(@RequestBody PostComplaintDto complaint){
         complaint.setCreateTime(LocalDateTime.now());
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
@@ -66,8 +67,10 @@ public class ComplaintController {
      * @return 分页数据
      */
     @ApiOperation("根据指定条件返回投诉信息")
-    @RequestMapping(value = "/complaint/query", method = RequestMethod.GET)
-    public PageResult<Complaint> getComplaint(@RequestBody QueryComplaintDto queryComplaintDto, PageParams pageParams){
+    @RequestMapping(value = "/complaint/query/{pageNo}", method = RequestMethod.GET)
+    public PageResult<Complaint> getComplaint(QueryComplaintDto queryComplaintDto,
+                                              @PathVariable Long pageNo){
+        PageParams pageParams = new PageParams(pageNo);
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         UserThreadLocalDto userThreadLocalDto = authThreadLocal.get();
         IsAuth.init(userThreadLocalDto).or("90093").start();
@@ -93,11 +96,25 @@ public class ComplaintController {
                 authThreadLocal.get().getId());
     }
 
-    @ApiOperation("测设threadLocal保存与获取用户的auth")
+    /**
+     * 修改投诉中的相关信息
+     * @param updateComplaintDto 修改的信息
+     * @return RR
+     */
+    @ApiOperation("修改投诉信息中的内容")
+    @RequestMapping(value = "/complaint", method = RequestMethod.POST)
+    public RestResponse<Complaint> updateComplaint(@RequestBody UpdateComplaintDto updateComplaintDto){
+        ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
+        //910为业主, 90093为前台
+        IsAuth.init(authThreadLocal).or("90093").or("910").start();
+        return complaintService.updateComplaint(authThreadLocal.get().getAuth(), updateComplaintDto);
+    }
+
+    @ApiOperation("测试threadLocal保存与获取用户的auth")
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public void testThreadLocal(){
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         UserThreadLocalDto user = authThreadLocal.get();
-        log.info(user.getAuth());
+        log.info("测试threadLocal保存与获取用户的auth为: {}", user.getAuth());
     }
 }

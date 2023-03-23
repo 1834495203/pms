@@ -26,7 +26,6 @@ public class FormCodeGenerator {
     private static final String[] TABLE_NAMES = new String[]{
             "broadcast",
             "complaint",
-            "estate",
             "facility",
             "repair"
     };

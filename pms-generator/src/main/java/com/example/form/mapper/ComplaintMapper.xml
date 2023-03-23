@@ -12,11 +12,12 @@
         <result column="process" property="process" />
         <result column="profile" property="profile" />
         <result column="solver_id" property="solverId" />
+        <result column="title" property="title" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        cid, pubilsher_id, content, state, create_time, process, profile, solver_id
+        cid, pubilsher_id, content, state, create_time, process, profile, solver_id, title
     </sql>
 
 </mapper>

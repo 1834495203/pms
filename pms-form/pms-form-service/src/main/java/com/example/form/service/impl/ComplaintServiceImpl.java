@@ -1,19 +1,23 @@
 package com.example.form.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
+import com.example.exception.PMSException;
 import com.example.form.mapper.ComplaintMapper;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
+import com.example.form.model.dto.UpdateComplaintDto;
 import com.example.form.model.po.Complaint;
 import com.example.form.service.ComplaintService;
 import com.example.model.PageParams;
 import com.example.model.PageResult;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
+import com.example.utils.HasAuth;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -109,5 +113,29 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
         return new PageResult<>(page.getRecords(), page.getTotal(), pageParams.getPageNo(),
                 pageParams.getPageSize());
+    }
+
+    @Override
+    public RestResponse<Complaint> updateComplaint(String userAuth, UpdateComplaintDto updateComplaintDto) {
+        Integer cid = updateComplaintDto.getCid();
+        HasAuth<UpdateComplaintDto> updateComplaintDtoHasAuth = new HasAuth<>(userAuth, updateComplaintDto, UpdateComplaintDto.class);
+        UpdateComplaintDto afterAuth = updateComplaintDtoHasAuth.afterAuth();
+
+        //从数据库根据cid查询投诉表
+        LambdaQueryWrapper<Complaint> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Complaint::getCid, cid);
+        Complaint cFromDb = complaintMapper.selectOne(wrapper);
+        if (cFromDb == null)
+            return RestResponse.validFail("没有此投诉单", Error.DATABASE_SELECT_FAILED);
+
+        //如果为业主 且id不相等 则抛出
+        if (userAuth.contains("910") && !cFromDb.getPubilsherId().equals(updateComplaintDto.getPubilsherId()))
+            throw new PMSException("不能修改除自己以外的信息", Error.UNAUTHORIZED);
+
+        //忽略null字段
+        BeanUtil.copyProperties(afterAuth, cFromDb, CopyOptions.create().ignoreNullValue());
+        if (complaintMapper.updateById(cFromDb) == 1)
+            return RestResponse.success(cFromDb, "投诉表更新成功", Valid.DATABASE_UPDATE_SUCCESS);
+        return RestResponse.validFail(cFromDb, "投诉表更新失败", Error.DATABASE_UPDATE_FAILED);
     }
 }

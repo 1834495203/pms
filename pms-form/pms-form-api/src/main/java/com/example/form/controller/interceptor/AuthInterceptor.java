@@ -1,7 +1,6 @@
 package com.example.form.controller.interceptor;
 
 import com.example.auth.config.JwtConfig;
-import com.example.exception.Error;
 import com.example.exception.PMSException;
 import com.example.form.config.AuthThreadLocal;
 import com.example.form.model.dto.UserThreadLocalDto;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 拦截器将用户的auth保存在threadLocal中
+ * 拦截器将用户的auth和id保存在threadLocal中
  */
 @Slf4j
 @Component

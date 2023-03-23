@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
- * 公告
+ * 
  * </p>
  *
  * @author GLaDOS

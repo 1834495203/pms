@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 /**
  * <p>
- * 投诉
+ * 
  * </p>
  *
  * @author GLaDOS
@@ -60,6 +60,11 @@ public class Complaint implements Serializable {
      * 解决人id
      */
     private Integer solverId;
+
+    /**
+     * 标题
+     */
+    private String title;
 
 
 }

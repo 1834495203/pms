@@ -8,12 +8,17 @@
         <result column="name" property="name" />
         <result column="state" property="state" />
         <result column="in_charge_id" property="inChargeId" />
-        <result column="address" property="address" />
+        <result column="type" property="type" />
+        <result column="create_date" property="createDate" />
+        <result column="building" property="building" />
+        <result column="unit" property="unit" />
+        <result column="section" property="section" />
+        <result column="sole_id" property="soleId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        fid, name, state, in_charge_id, address
+        fid, name, state, in_charge_id, type, create_date, building, unit, section, sole_id
     </sql>
 
 </mapper>

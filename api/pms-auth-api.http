@@ -7,6 +7,16 @@ Content-Type: application/json
   "password": "114514"
 }
 
+### 注册前台
+POST {{auth_host}}/auth/register/admin
+Content-Type: application/json
+
+{
+  "username": "rose",
+  "password": "123456",
+  "authority": "90093"
+}
+
 ### 注册业主
 POST {{auth_host}}/auth/register/proprietor
 Content-Type: application/json
@@ -24,6 +34,15 @@ Content-Type: application/json
 {
   "username": "Marias",
   "password": "114514"
+}
+
+### 登录前台
+POST {{auth_host}}/auth/login/admin
+Content-Type: application/json
+
+{
+  "username": "rose",
+  "password": "123456"
 }
 
 ### 登录业主

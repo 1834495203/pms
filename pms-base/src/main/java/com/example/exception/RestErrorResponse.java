@@ -14,6 +14,8 @@ public class RestErrorResponse implements Serializable {
 
     private Error error;
 
+    private Integer errorCode;
+
     public RestErrorResponse(String errMessage){
         this.errMessage= errMessage;
     }
@@ -21,5 +23,6 @@ public class RestErrorResponse implements Serializable {
     public RestErrorResponse(String errMessage, Error error) {
         this.errMessage = errMessage;
         this.error = error;
+        this.errorCode = error.getCode();
     }
 }

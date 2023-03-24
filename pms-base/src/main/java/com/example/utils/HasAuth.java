@@ -50,6 +50,7 @@ public class HasAuth <T> {
             String[] exclude = {};
             Auth superAnnotation;
             if ((superAnnotation = entity.getClass().getAnnotation(Auth.class)) != null){
+                //如在类上声明
                 superAuth = superAnnotation.auth();
                 exclude = superAnnotation.exclude();
             }

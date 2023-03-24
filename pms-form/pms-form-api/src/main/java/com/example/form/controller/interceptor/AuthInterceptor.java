@@ -25,8 +25,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //设置一个默认用户信息 -1表示未登录用户
-        UserThreadLocalDto userThreadLocalDto = new UserThreadLocalDto(-1, "-1");
+        //设置一个默认用户信息 999表示未登录用户
+        UserThreadLocalDto userThreadLocalDto = new UserThreadLocalDto(-1, "999");
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         authThreadLocal.set(userThreadLocalDto);
         String token = request.getHeader(jwtConfig.getHeader());

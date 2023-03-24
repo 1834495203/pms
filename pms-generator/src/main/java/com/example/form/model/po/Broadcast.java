@@ -2,6 +2,9 @@ package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -51,9 +54,15 @@ public class Broadcast implements Serializable {
     private String state;
 
     /**
-     * 图片信息
+     * 媒体信息
      */
     private String profile;
+
+    /**
+     * 发表时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createDate;
 
 
 }

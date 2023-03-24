@@ -1,30 +1,17 @@
-package com.example.form.model.po;
+package com.example.form.model.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.example.utils.Auth;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * 
- * </p>
- *
+ * 查询公告条件
  * @author GLaDOS
+ * @date 2023/3/25 0:04
  */
 @Data
-@TableName("broadcast")
-public class Broadcast implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 公告id
-     */
-    @TableId(value = "bid", type = IdType.AUTO)
-    private Integer bid;
+public class QueryBroadcastDto {
 
     /**
      * 标题
@@ -59,8 +46,11 @@ public class Broadcast implements Serializable {
     /**
      * 发表时间
      */
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createDate;
 
-
+    /**
+     * 查询时间的条件
+     * -1 之前; 0 等于; 1 之后
+     */
+    private Integer queryTime;
 }

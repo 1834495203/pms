@@ -72,7 +72,7 @@ public class Facility implements Serializable {
     /**
      * 唯一辨识id
      */
-    private Integer soleId;
+    private String soleId;
 
 
 }

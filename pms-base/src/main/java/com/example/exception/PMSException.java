@@ -9,6 +9,8 @@ public class PMSException extends RuntimeException {
 
     private Error error;
 
+    private Integer errorCode;
+
     public PMSException() {
         super();
     }
@@ -26,6 +28,11 @@ public class PMSException extends RuntimeException {
         super(message);
         this.errorMsg = message;
         this.error = error;
+        this.errorCode = error.getCode();
+    }
+
+    public Integer getErrorCode() {
+        return errorCode;
     }
 
     public Error getCommonError() {

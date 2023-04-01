@@ -9,11 +9,16 @@ import com.example.exception.PMSException;
 import com.example.auth.mapper.ProprietorMapper;
 import com.example.auth.po.Proprietor;
 import com.example.auth.service.ProprietorService;
+import com.example.model.RestResponse;
+import com.example.model.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -42,6 +47,8 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
         boolean equals = proprietorFromDb.getPassword().equals(proprietor.getPassword());
         if (!equals)
             throw new PMSException("密码错误", Error.WRONG_PASSWORD);
+        //将密码抹去
+        proprietor.setPassword("");
         String s = JSONUtil.toJsonStr(proprietor);
         if (proprietorFromDb.getStatus() == null)
             throw new PMSException("用户身份错误", Error.NO_AUTH);
@@ -59,5 +66,15 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
             throw new PMSException("用户名重复!", Error.SAME_USERNAME);
         proprietorMapper.insert(proprietor);
         return true;
+    }
+
+    @Override
+    public RestResponse<Proprietor> getCurrentProprietor(Integer id, String auth) {
+        Proprietor proprietor = proprietorMapper.selectById(id);
+        if (proprietor == null) return RestResponse.validFail("没有该对象!", Error.DATABASE_SELECT_FAILED);
+        proprietor.setPassword("");
+        if (proprietor.getStatus().equals(auth))
+            return RestResponse.success(proprietor, "success", Valid.DATABASE_SELECT_SUCCESS);
+        return RestResponse.validFail("没有该权限", Error.UNAUTHORIZED);
     }
 }

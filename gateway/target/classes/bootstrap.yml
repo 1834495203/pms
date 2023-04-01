@@ -2,6 +2,23 @@ spring:
   application:
     name: gateway
   cloud:
+#    gateway:
+#      globalcors:
+#        add-to-simple-url-handler-mapping: true
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins:
+#              - "http://localhost:8080"
+#              - "http://www.mahiro.com"
+#            allowedMethods:
+#              - "GET"
+#              - "POST"
+#              - "DELETE"
+#              - "PUT"
+#              - "OPTIONS"
+#            allowedHeaders: "*" #允许请求中携带的头信息
+#            allowedCredentials: true #是否允许携带cookie
+#            maxAge: 36000 #跨域检测的有效期,单位s
     nacos:
       server-addr: localhost:8848
       discovery:
@@ -12,9 +29,12 @@ spring:
         group: mahiro
         file-extension: yaml
         refresh-enabled: true
-#        shared-configs:
-#          - data-id: logging-${spring.profiles.active}.yaml
-#            group: os
-#            refresh: true
+        shared-configs:
+          - data-id: redis-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
+          - data-id: jwt-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
   profiles:
     active: dev

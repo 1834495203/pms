@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
     //捕获PMSException可知异常
     @ExceptionHandler(PMSException.class)
-    @ResponseStatus(HttpStatus.OK) //返回异常信息
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) //返回异常信息
     @ResponseBody
     public RestErrorResponse doOSException(PMSException e){
         String errorMsg = e.getErrorMsg();

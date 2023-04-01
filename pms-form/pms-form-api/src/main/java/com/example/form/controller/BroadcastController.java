@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * @author GLaDOS
  * @date 2023/3/24 22:00
  */
-@Api("公告相关api")
+@Api(value = "公告相关api", tags = "公告相关api")
 @Slf4j
 @RestController
 public class BroadcastController {
@@ -72,7 +72,20 @@ public class BroadcastController {
         PageParams pageParams = new PageParams(pageNo);
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         String userAuth = authThreadLocal.get().getAuth();
+        return broadcastService.queryBroadcast(pageParams, queryBroadcastDto, userAuth);
+    }
 
-        return null;
+    /**
+     * 根据id删除公告信息
+     * 仅对应的publisher_id能删除
+     * @param bid id
+     * @return RR
+     */
+    @ApiOperation("根据id删除公告信息")
+    @RequestMapping(value = "/broadcast/{bid}", method = RequestMethod.DELETE)
+    public RestResponse<Broadcast> deleteBroadcastById(@PathVariable Integer bid){
+        ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
+        IsAuth.init(authThreadLocal).or("900").start();
+        return broadcastService.deleteBroadcastById(bid, authThreadLocal.get().getId());
     }
 }

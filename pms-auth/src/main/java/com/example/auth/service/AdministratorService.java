@@ -2,6 +2,7 @@ package com.example.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.auth.po.Administrator;
+import com.example.model.RestResponse;
 
 /**
  * <p>
@@ -26,4 +27,12 @@ public interface AdministratorService extends IService<Administrator> {
      * @return boolean
      */
     boolean registerForAdmin(Administrator administrator);
+
+    /**
+     * 获取当前用户的权限
+     * @param id 用户id
+     * @param auth 用户权限
+     * @return RR
+     */
+    RestResponse<Administrator> getCurrentAdminInfo(Integer id, String auth);
 }

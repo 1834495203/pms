@@ -16,6 +16,9 @@
         <processorPath useClasspath="false">
           <entry name="$PROJECT_DIR$/../maven/repository/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar" />
         </processorPath>
+        <module name="pms-personnel-model" />
+        <module name="pms-personnel-service" />
+        <module name="pms-personnel-api" />
         <module name="pms-base" />
         <module name="pms-form-model" />
         <module name="pms-generator" />
@@ -27,6 +30,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="gateway" target="1.8" />
+      <module name="personnel-api" target="1.8" />
       <module name="pms" target="1.8" />
       <module name="pms-auth" target="1.8" />
       <module name="pms-base" target="1.8" />
@@ -35,7 +39,12 @@
       <module name="pms-form-model" target="1.8" />
       <module name="pms-form-service" target="1.8" />
       <module name="pms-generator" target="1.8" />
+      <module name="pms-media" target="1.8" />
       <module name="pms-parent" target="1.8" />
+      <module name="pms-personnel" target="1.8" />
+      <module name="pms-personnel-api" target="1.8" />
+      <module name="pms-personnel-model" target="1.8" />
+      <module name="pms-personnel-service" target="1.8" />
       <module name="pms-property" target="1.8" />
     </bytecodeTargetLevel>
   </component>

@@ -4,9 +4,12 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.example.auth.config.JwtConfig;
 import com.example.auth.po.Administrator;
 import com.example.auth.po.Proprietor;
+import com.example.auth.po.Visitor;
 import com.example.auth.service.AdministratorService;
 import com.example.auth.service.ProprietorService;
 import com.example.auth.dto.UserResponse;
+import com.example.model.RestResponse;
+import com.example.model.Valid;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,16 @@ public class UserController {
         return jwtConfig.getTokenClaim(token).getSubject();
     }
 
+    @ApiOperation("接口测试")
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public RestResponse<Visitor> testFront(){
+        Visitor visitor = new Visitor();
+        visitor.setName("Marias");
+        visitor.setGender("女");
+        visitor.setLeavingTime(LocalDateTime.now());
+        return RestResponse.success(visitor, "ok", Valid.SUCCESS);
+    }
+
     @ApiOperation("管理员登录api")
     @RequestMapping(value = "/login/admin", method = RequestMethod.POST)
     public UserResponse loginForAdmin(@RequestBody Administrator administrator){
@@ -63,7 +76,7 @@ public class UserController {
 
     @ApiOperation("业主登录api")
     @RequestMapping(value = "/login/proprietor", method = RequestMethod.POST)
-    public UserResponse loginForProprietor(@RequestBody Proprietor proprietor){
+    public UserResponse loginForProprietor(@RequestBody Proprietor proprietor) {
         //将密码加密
         String s = DigestUtil.md5Hex(proprietor.getPassword());
         proprietor.setPassword(s);
@@ -73,7 +86,7 @@ public class UserController {
 
     @ApiOperation("业主注册api")
     @RequestMapping(value = "/register/proprietor", method = RequestMethod.POST)
-    public UserResponse registerForProprietor(@RequestBody Proprietor proprietor){
+    public UserResponse registerForProprietor(@RequestBody Proprietor proprietor) {
         if (proprietor.getCreateDate() == null)
             proprietor.setCreateDate(LocalDateTime.now());
         //将密码加密

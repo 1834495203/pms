@@ -19,11 +19,6 @@ public class QueryBroadcastDto {
     private String title;
 
     /**
-     * 内容
-     */
-    private String content;
-
-    /**
      * 对应发放的人员
      */
     private String correspond;

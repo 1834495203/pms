@@ -1,6 +1,8 @@
 package com.example.form;
 
+import com.example.auth.config.WebConfig;
 import com.example.auth.config.impl.JwtConfigBase;
+import com.example.auth.controller.interceptor.AuthInterceptor;
 import com.example.exception.GlobalExceptionHandler;
 import com.example.utils.HasAuth;
 import com.spring4all.swagger.EnableSwagger2Doc;

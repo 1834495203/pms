@@ -24,6 +24,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="pms-form-model" />
     <orderEntry type="module" module-name="pms-base" />
+    <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.19.0" level="project" />
+    <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt:0.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.10" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.83" level="project" />
     <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.8.10" level="project" />

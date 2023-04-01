@@ -10,7 +10,9 @@ public enum Valid implements Code{
     DATABASE_INSERT_SUCCESS(606),
     DATABASE_UPDATE_SUCCESS(605),
     DATABASE_DELETE_SUCCESS(604),
-    DATABASE_SELECT_SUCCESS(603);
+    DATABASE_SELECT_SUCCESS(603),
+
+    UPLOAD_FILE_SUCCESS(313);
 
     private final Integer code;
 

@@ -40,4 +40,12 @@ public interface BroadcastService extends IService<Broadcast> {
      * @return PR
      */
     PageResult<Broadcast> queryBroadcast(PageParams pageParams, QueryBroadcastDto queryBroadcastDto, String userAuth);
+
+    /**
+     * 根据id删除公告信息
+     * @param bid 公告id
+     * @param uid 用户id
+     * @return RR
+     */
+    RestResponse<Broadcast> deleteBroadcastById(Integer bid, Integer uid);
 }

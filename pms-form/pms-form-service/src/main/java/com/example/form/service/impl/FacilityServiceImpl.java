@@ -118,8 +118,8 @@ public class FacilityServiceImpl extends ServiceImpl<FacilityMapper, Facility> i
         //分页查询
         Page<Facility> facilityPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
         Page<Facility> pages = facilityMapper.selectPage(facilityPage, wrapper);
-        if (pages == null)
-            throw new PMSException("分页查询失败", Error.DATABASE_SELECT_FAILED);
+        if (pages.getTotal() == 0)
+            throw new PMSException("没有对应的信息", Error.DATABASE_SELECT_FAILED);
         return new PageResult<>(pages.getRecords(), pages.getTotal(), pageParams.getPageNo(), pageParams.getPageSize());
     }
 }

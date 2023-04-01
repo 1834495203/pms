@@ -9,6 +9,8 @@ import com.example.auth.service.AdministratorService;
 import com.example.auth.config.JwtConfig;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
+import com.example.model.RestResponse;
+import com.example.model.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,8 @@ public class AdministratorServiceImpl extends ServiceImpl<AdministratorMapper, A
         boolean equals = adminFromDb.getPassword().equals(administrator.getPassword());
         if (!equals)
             throw new PMSException("密码错误!", Error.WRONG_PASSWORD);
-        String s = JSONUtil.toJsonStr(adminFromDb);
+        administrator.setPassword("");
+        String s = JSONUtil.toJsonStr(administrator);
         if (adminFromDb.getAuthority() == null)
             throw new PMSException("没有对应的权限设置!", Error.UNAUTHORIZED);
         return jwtConfig.createToken(s, adminFromDb.getAid(), adminFromDb.getAuthority());
@@ -59,5 +62,16 @@ public class AdministratorServiceImpl extends ServiceImpl<AdministratorMapper, A
             throw new PMSException("用户名重复!", Error.SAME_USERNAME);
         administratorMapper.insert(administrator);
         return true;
+    }
+
+    @Override
+    public RestResponse<Administrator> getCurrentAdminInfo(Integer id, String auth) {
+        Administrator administrator = administratorMapper.selectById(id);
+        if (administrator == null)
+            return RestResponse.validFail("没有该对象!", Error.DATABASE_SELECT_FAILED);
+        administrator.setPassword("");
+        if (administrator.getAuthority().equals("auth"))
+            return RestResponse.success(administrator, "success", Valid.DATABASE_SELECT_SUCCESS);
+        return RestResponse.validFail("没有权限!", Error.UNAUTHORIZED);
     }
 }

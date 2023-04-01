@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author GLaDOS
- * @since 2023-03-21
+ * @since 2023-04-01
  */
 public interface AdministratorService extends IService<Administrator> {
 

@@ -1,5 +1,6 @@
 package com.example.auth.config.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.example.auth.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,7 +17,7 @@ import java.util.Date;
 public class JwtConfigBase extends JwtConfig {
 
     public String createToken (String subject, Integer id){
-        Date nowDate = new Date();
+        Date nowDate = new Date(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR, expire);
 
@@ -31,7 +32,7 @@ public class JwtConfigBase extends JwtConfig {
     }
 
     public String createToken (String subject, Integer id, String auth){
-        Date nowDate = new Date();
+        Date nowDate = new Date(System.currentTimeMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.HOUR, expire);
 

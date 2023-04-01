@@ -3,6 +3,8 @@ package com.example.form.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -71,6 +74,42 @@ public class BroadcastServiceImpl extends ServiceImpl<BroadcastMapper, Broadcast
             throw new PMSException("没有权限调用此api", Error.UNAUTHORIZED);
 
         //TODO 公告查询
-        return null;
+        LambdaQueryWrapper<Broadcast> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Broadcast::getCorrespond, userAuth);
+        //模糊查询
+        if (queryBroadcastDto.getTitle() != null)
+            wrapper.like(Broadcast::getTitle, queryBroadcastDto.getTitle());
+        //时间查询
+        if (queryBroadcastDto.getCreateDate() != null){
+            if (queryBroadcastDto.getQueryTime() == null || queryBroadcastDto.getQueryTime() == 0)
+                wrapper.eq(Broadcast::getCreateDate, queryBroadcastDto.getCreateDate());
+            else if (queryBroadcastDto.getQueryTime() > 0)
+                wrapper.gt(Broadcast::getCreateDate, queryBroadcastDto.getCreateDate());
+            else wrapper.lt(Broadcast::getCreateDate, queryBroadcastDto.getCreateDate());
+        }
+        //精确查询
+        HashMap<SFunction<Broadcast, ?>, Object> map = new HashMap<>();
+        map.put(Broadcast::getPubilsherId, queryBroadcastDto.getPubilsherId());
+        map.put(Broadcast::getState, queryBroadcastDto.getState());
+        wrapper.allEq(map);
+        //分页查询
+        Page<Broadcast> broadcastPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
+        Page<Broadcast> pages = broadcastMapper.selectPage(broadcastPage, wrapper);
+        if (pages.getTotal() == 0)
+            throw new PMSException("没有对应的信息", Error.DATABASE_SELECT_FAILED);
+        return new PageResult<>(pages.getRecords(), pages.getTotal(),
+                pageParams.getPageNo(), pageParams.getPageSize());
+    }
+
+    @Override
+    public RestResponse<Broadcast> deleteBroadcastById(Integer bid, Integer uid) {
+        Broadcast broadcast = broadcastMapper.selectById(bid);
+        if (broadcast == null)
+            return RestResponse.validFail("没有该对象", Error.DATABASE_SELECT_FAILED);
+        if (!broadcast.getPubilsherId().equals(uid))
+            return RestResponse.validFail("没有权限调用此api", Error.UNAUTHORIZED);
+        if (broadcastMapper.deleteById(bid) == 1)
+            return RestResponse.success(broadcast, "删除成功", Valid.DATABASE_DELETE_SUCCESS);
+        return RestResponse.validFail("删除失败", Error.DATABASE_DELETE_FAILED);
     }
 }

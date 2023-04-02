@@ -24,10 +24,11 @@ public class FormCodeGenerator {
     private static final String DATA_SOURCE_PASSWORD  = "123456";
     //生成的表
     private static final String[] TABLE_NAMES = new String[]{
-            "broadcast",
-            "complaint",
-            "facility",
-            "repair"
+//            "broadcast",
+//            "complaint",
+//            "facility",
+//            "repair",
+            "pict"
     };
 
     // TODO 默认生成entity，需要生成DTO修改此变量

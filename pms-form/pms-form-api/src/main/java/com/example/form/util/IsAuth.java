@@ -2,7 +2,7 @@ package com.example.form.util;
 
 import com.example.exception.Error;
 import com.example.exception.PMSException;
-import com.example.form.model.dto.UserThreadLocalDto;
+import com.example.model.UserThreadLocalDto;
 
 /**
  * 判断用户权限

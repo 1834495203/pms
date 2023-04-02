@@ -11,10 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -36,6 +33,12 @@ public class AlterUserController {
     @Autowired
     private AdministratorService administratorService;
 
+    /**
+     * 上传用户头像
+     * @param file 头像
+     * @return RR
+     * @throws IOException 文件
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public RestResponse<?> uploadUserProfile(@RequestPart("file") MultipartFile file) throws IOException {
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
@@ -58,7 +61,7 @@ public class AlterUserController {
         else if (auth.contains("900"))
             r = administratorService.upLoadUserProfile(file.getOriginalFilename(), path, id);
         boolean delete = temp.delete();
-        if (delete) log.info("临时文件删除成功");
+        if (delete) log.info("临时文件: {} 删除成功", file.getOriginalFilename());
         return r;
     }
 

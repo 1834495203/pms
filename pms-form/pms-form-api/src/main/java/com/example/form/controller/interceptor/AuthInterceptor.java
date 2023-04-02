@@ -2,8 +2,8 @@ package com.example.form.controller.interceptor;
 
 import com.example.auth.config.JwtConfig;
 import com.example.exception.PMSException;
-import com.example.form.config.AuthThreadLocal;
-import com.example.form.model.dto.UserThreadLocalDto;
+import com.example.config.AuthThreadLocal;
+import com.example.model.UserThreadLocalDto;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

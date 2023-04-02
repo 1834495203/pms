@@ -28,7 +28,8 @@ public enum Error implements Code{
 	DATABASE_UPDATE_FAILED(644),
 	DATABASE_SELECT_FAILED(633),
 
-	UPLOAD_FILE_FAILED(303);
+	UPLOAD_FILE_FAILED(303),
+	DELETE_FILE_FAILED(313);
 
 	private final Integer code;
 

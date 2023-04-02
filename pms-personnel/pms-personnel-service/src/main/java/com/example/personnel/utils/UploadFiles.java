@@ -60,7 +60,7 @@ public class UploadFiles {
         }
     }
 
-    private String uploadFile2Minio(String filename, String localFilePath, String bucket, MinioClient minioClient){
+    public String uploadFile2Minio(String filename, String localFilePath, String bucket, MinioClient minioClient){
         //获取后缀
         String ex = filename.substring(filename.lastIndexOf("."));
         //得到mimeType

@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 前端发送的投诉信息表
@@ -33,7 +35,7 @@ public class PostComplaintDto {
      * 图片信息
      */
     @ApiParam(value = "图片信息")
-    private String profile;
+    private String profiles;
 
     /**
      * 标题

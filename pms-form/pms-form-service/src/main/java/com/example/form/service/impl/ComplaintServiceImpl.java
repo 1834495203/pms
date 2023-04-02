@@ -13,16 +13,21 @@ import com.example.form.model.dto.QueryComplaintDto;
 import com.example.form.model.dto.UpdateComplaintDto;
 import com.example.form.model.po.Complaint;
 import com.example.form.service.ComplaintService;
+import com.example.form.util.String2Map;
+import com.example.form.util.UploadFiles;
 import com.example.model.PageParams;
 import com.example.model.PageResult;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
 import com.example.utils.HasAuth;
+import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -40,8 +45,16 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
     @Override
     public RestResponse<Complaint> postComplaint(PostComplaintDto complaint) {
+        //string转map
+        Map<String, Integer> hashMap = String2Map.string2map(complaint.getProfiles());
         Complaint complaint2Db = new Complaint();
         BeanUtil.copyProperties(complaint, complaint2Db);
+
+        StringBuffer sb = new StringBuffer();
+        hashMap.values().forEach(v->sb.append(v).append(","));
+        //减去最后的逗号
+        sb.deleteCharAt(sb.length()-1);
+        complaint2Db.setProfile(sb.toString());
         if (complaintMapper.insert(complaint2Db) == 1)
             return RestResponse.success(complaint2Db);
         return RestResponse.validFail(complaint2Db, "未知错误, 插入失败!",

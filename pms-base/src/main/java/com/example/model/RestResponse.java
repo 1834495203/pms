@@ -124,6 +124,6 @@ public class RestResponse<T> {
     }
 
     public Boolean isSuccessful() {
-    return this.code == Valid.SUCCESS;
+        return this.code.getClass().equals(Valid.class);
     }
 }

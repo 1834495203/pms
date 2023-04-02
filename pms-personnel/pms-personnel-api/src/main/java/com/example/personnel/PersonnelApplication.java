@@ -6,12 +6,14 @@ import com.example.utils.HasAuth;
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 
 /**
  * @author GLaDOS
  * @date 2023/4/1 14:04
  */
+@EnableFeignClients(basePackages = {"com.example.personnel.client"})
 @Import({JwtConfigBase.class, GlobalExceptionHandler.class, HasAuth.class})
 @EnableSwagger2Doc
 @SpringBootApplication

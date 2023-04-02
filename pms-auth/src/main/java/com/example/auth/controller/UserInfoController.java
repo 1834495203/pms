@@ -30,6 +30,10 @@ public class UserInfoController {
     @Autowired
     private AdministratorService administratorService;
 
+    /**
+     * 根据token获取当前用户id
+     * @return RR
+     */
     @ApiOperation("根据token获取当前用户id")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public RestResponse<?> getCurrentUserInfo(){

@@ -25,10 +25,10 @@ public class FormCodeGenerator {
     //生成的表
     private static final String[] TABLE_NAMES = new String[]{
 //            "broadcast",
-//            "complaint",
+            "complaint",
 //            "facility",
 //            "repair",
-            "pict"
+//            "pict"
     };
 
     // TODO 默认生成entity，需要生成DTO修改此变量

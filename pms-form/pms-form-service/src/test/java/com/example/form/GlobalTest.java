@@ -2,11 +2,14 @@ package com.example.form;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.util.StringUtils;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,5 +57,11 @@ public class GlobalTest {
             hashMap.put(kv[0], Integer.valueOf(kv[1]));
         }
         hashMap.forEach((k, v)-> System.out.println(k+":"+v));
+    }
+
+    @Test
+    void testTime(){
+        System.out.println(DateUtil.format(LocalDateTime.now(), "yyyy-MM-dd"));
+        System.out.println(LocalDate.now());
     }
 }

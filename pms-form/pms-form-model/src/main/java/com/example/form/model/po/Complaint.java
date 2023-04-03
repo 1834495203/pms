@@ -1,13 +1,12 @@
 package com.example.form.model.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -71,4 +70,10 @@ public class Complaint implements Serializable {
      */
     @ApiParam(value = "标题", required = true)
     private String title;
+
+    /**
+     * 发布日期
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDate createDate;
 }

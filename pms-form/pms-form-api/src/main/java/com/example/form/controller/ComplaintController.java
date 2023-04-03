@@ -5,6 +5,7 @@ import com.example.exception.Error;
 import com.example.exception.PMSException;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
+import com.example.form.model.dto.ResultComplaintDto;
 import com.example.form.model.dto.UpdateComplaintDto;
 import com.example.form.model.po.Complaint;
 import com.example.form.service.ComplaintService;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Api(value = "投诉接口", tags = "投诉接口")
@@ -42,6 +44,7 @@ public class ComplaintController {
     @RequestMapping(value = "/complaint", method = RequestMethod.PUT)
     public RestResponse<Complaint> postComplaint(@RequestBody PostComplaintDto complaint){
         complaint.setCreateTime(LocalDateTime.now());
+        complaint.setCreateDate(LocalDate.now());
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         //910为业主的前缀
         IsAuth.init(authThreadLocal).or("910").start();
@@ -72,13 +75,13 @@ public class ComplaintController {
      * @return 分页数据
      */
     @ApiOperation("根据指定条件返回投诉信息")
-    @RequestMapping(value = "/complaint/query/{pageNo}", method = RequestMethod.GET)
-    public PageResult<Complaint> getComplaint(QueryComplaintDto queryComplaintDto,
-                                              @PathVariable Long pageNo){
+    @RequestMapping(value = "/complaint/query/{pageNo}", method = RequestMethod.POST)
+    public PageResult<ResultComplaintDto> getComplaint(@RequestBody QueryComplaintDto queryComplaintDto,
+                                                       @PathVariable Long pageNo){
         PageParams pageParams = new PageParams(pageNo);
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         UserThreadLocalDto userThreadLocalDto = authThreadLocal.get();
-        IsAuth.init(userThreadLocalDto).or("90093").start();
+        IsAuth.init(userThreadLocalDto).or("90093").or("910").start();
         if (queryComplaintDto.getCreateTime() != null && queryComplaintDto.getQueryTime() == null)
             queryComplaintDto.setQueryTime(0);
         //TODO 实现条件查询投诉单的信息的service

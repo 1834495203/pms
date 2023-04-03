@@ -3,6 +3,7 @@ package com.example.form.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
+import com.example.form.model.dto.ResultComplaintDto;
 import com.example.form.model.dto.UpdateComplaintDto;
 import com.example.form.model.po.Complaint;
 import com.example.model.PageParams;
@@ -47,7 +48,7 @@ public interface ComplaintService extends IService<Complaint> {
      * @param queryComplaintDto 查询的条件
      * @return 分页内容
      */
-    PageResult<Complaint> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto);
+    PageResult<ResultComplaintDto> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto);
 
     /**
      * 修改投诉中的相关信息

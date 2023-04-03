@@ -73,4 +73,13 @@ public class PictServiceImpl extends ServiceImpl<PictMapper, Pict> implements Pi
             return RestResponse.success(pict, "删除成功", Valid.DATABASE_DELETE_SUCCESS);
         return RestResponse.validFail("删除失败", Error.DATABASE_DELETE_FAILED);
     }
+
+    @Override
+    public RestResponse<Pict> queryById(Integer id) {
+        Pict pict = pictMapper.selectById(id);
+        if (pict == null) return RestResponse.validFail("没有对象！", Error.DATABASE_SELECT_FAILED);
+        return RestResponse.success(pict, "获取成功", Valid.DATABASE_SELECT_SUCCESS);
+    }
+
+
 }

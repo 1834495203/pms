@@ -1,8 +1,11 @@
 package com.example.form.model.dto;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -38,4 +41,10 @@ public class QueryComplaintDto {
      * 发送人信息
      */
     private Integer pubilsherId;
+
+    /**
+     * 发布日期
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDate createDate;
 }

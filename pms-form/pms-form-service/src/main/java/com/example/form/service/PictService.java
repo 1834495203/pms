@@ -30,4 +30,10 @@ public interface PictService extends IService<Pict> {
      */
     RestResponse<Pict> deletePict(Integer id);
 
+    /**
+     * 根据id查询pict信息
+     * @param id 文件id
+     * @return RR
+     */
+    RestResponse<Pict> queryById(Integer id);
 }

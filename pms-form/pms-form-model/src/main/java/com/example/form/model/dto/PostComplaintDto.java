@@ -1,8 +1,11 @@
 package com.example.form.model.dto;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -42,4 +45,10 @@ public class PostComplaintDto {
      */
     @ApiParam(value = "标题", required = true)
     private String title;
+
+    /**
+     * 发布日期
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDate createDate;
 }

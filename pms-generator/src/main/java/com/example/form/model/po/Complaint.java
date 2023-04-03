@@ -1,8 +1,11 @@
 package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -66,5 +69,9 @@ public class Complaint implements Serializable {
      */
     private String title;
 
-
+    /**
+     * 发布日期
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDate createDate;
 }

@@ -8,24 +8,25 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
 import com.example.form.mapper.ComplaintMapper;
+import com.example.form.mapper.PictMapper;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
+import com.example.form.model.dto.ResultComplaintDto;
 import com.example.form.model.dto.UpdateComplaintDto;
 import com.example.form.model.po.Complaint;
+import com.example.form.model.po.Pict;
 import com.example.form.service.ComplaintService;
 import com.example.form.util.String2Map;
-import com.example.form.util.UploadFiles;
 import com.example.model.PageParams;
 import com.example.model.PageResult;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
 import com.example.utils.HasAuth;
-import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,9 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
     @Autowired
     private ComplaintMapper complaintMapper;
+
+    @Autowired
+    private PictMapper pictMapper;
 
     @Override
     public RestResponse<Complaint> postComplaint(PostComplaintDto complaint) {
@@ -99,7 +103,7 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
     }
 
     @Override
-    public PageResult<Complaint> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto) {
+    public PageResult<ResultComplaintDto> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto) {
         LambdaQueryWrapper<Complaint> wrapper = new LambdaQueryWrapper<>();
         //根据状态查询
         if (queryComplaintDto.getState() != null)
@@ -111,20 +115,42 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
         if (queryComplaintDto.getTitle() != null)
             wrapper.like(Complaint::getTitle, queryComplaintDto.getTitle());
         //根据发布的时间查询
-        if (queryComplaintDto.getCreateTime() != null){
+        if (queryComplaintDto.getCreateDate() != null){
             //之前
             if (queryComplaintDto.getQueryTime() == -1)
-                wrapper.lt(Complaint::getCreateTime, queryComplaintDto.getCreateTime());
+                wrapper.lt(Complaint::getCreateDate, queryComplaintDto.getCreateDate());
             //之后
             else if (queryComplaintDto.getQueryTime() == 1)
-                wrapper.gt(Complaint::getCreateTime, queryComplaintDto.getCreateTime());
+                wrapper.gt(Complaint::getCreateDate, queryComplaintDto.getCreateDate());
             //等于
-            else wrapper.eq(Complaint::getCreateTime, queryComplaintDto.getCreateTime());
+            else wrapper.like(Complaint::getCreateDate, queryComplaintDto.getCreateDate());
         }
         Page<Complaint> complaintPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
         Page<Complaint> page = complaintMapper.selectPage(complaintPage, wrapper);
-
-        return new PageResult<>(page.getRecords(), page.getTotal(), pageParams.getPageNo(),
+        //查询图片信息
+        ArrayList<ResultComplaintDto> resultComplaintDto = new ArrayList<>();
+        for (Complaint record : page.getRecords()) {
+            //遍历分页的数据
+            ResultComplaintDto result = new ResultComplaintDto();
+            BeanUtil.copyProperties(record, result);
+            String profile = record.getProfile();
+            if (profile != null){
+                String[] split = profile.split(",");
+                ArrayList<String> names = new ArrayList<>();
+                for (String s : split) {
+                    Pict pict = pictMapper.selectById(s);
+                    //将图片信息写入结果
+                    names.add(pict.getObjectName());
+                    //设置图片信息对应的投诉id
+                    if (pict.getProfileId() == null)
+                        pict.setProfileId(record.getCid());
+                    pictMapper.updateById(pict);
+                }
+                result.setObjectName(names);
+            }
+            resultComplaintDto.add(result);
+        }
+        return new PageResult<>(resultComplaintDto, page.getTotal(), pageParams.getPageNo(),
                 pageParams.getPageSize());
     }
 

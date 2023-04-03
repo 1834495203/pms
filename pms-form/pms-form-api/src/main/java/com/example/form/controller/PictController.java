@@ -7,6 +7,7 @@ import com.example.model.RestResponse;
 import com.example.model.UserThreadLocalDto;
 import com.example.utils.IsAuth;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class PictController {
      * @return RR
      * @throws IOException 文件io
      */
+    @ApiOperation("文件上传api")
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public RestResponse<Pict> uploadPict(@RequestPart("file") MultipartFile file) throws IOException {
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
@@ -56,11 +58,24 @@ public class PictController {
      * @param id 文件id
      * @return RR
      */
+    @ApiOperation("文件删除api")
     @RequestMapping(value = "/upload/{id}", method = RequestMethod.DELETE)
     public RestResponse<Pict> deletePict(@PathVariable("id") Integer id){
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         IsAuth.init(authThreadLocal).or("910").or("900").start();
 
         return pictService.deletePict(id);
+    }
+
+    /**
+     * 根据id查询pict信息
+     * @param id 文件id
+     * @return RR
+     */
+    @RequestMapping(value = "/upload/{id}", method = RequestMethod.GET)
+    public RestResponse<Pict> queryById(@PathVariable Integer id){
+        ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
+        IsAuth.init(authThreadLocal).or("910").or("900").start();
+        return pictService.queryById(id);
     }
 }

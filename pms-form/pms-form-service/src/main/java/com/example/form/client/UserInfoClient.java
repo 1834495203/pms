@@ -1,0 +1,32 @@
+package com.example.form.client;
+
+import com.example.form.model.dto.ResultUserBaseInfo;
+import com.example.model.RestResponse;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+/**
+ * @author GLaDOS
+ * @date 2023/4/5 21:49
+ */
+@FeignClient(value = "personnel-api")
+public interface UserInfoClient {
+
+    /**
+     * 获取管理员基本信息
+     * @param id 管理员id
+     * @return ResultUserBaseInfo
+     */
+    @RequestMapping(value = "person/info/auth/{id}", method = RequestMethod.GET)
+    ResultUserBaseInfo getAuthUserBaseInfoById(@PathVariable("id") Integer id);
+
+    /**
+     * 获取业主基本信息
+     * @param id 业主id
+     * @return ResultUserBaseInfo
+     */
+    @RequestMapping(value = "person/info/prop/{id}", method = RequestMethod.GET)
+    ResultUserBaseInfo getPropUserBaseInfoById(@PathVariable("id") Integer id);
+}

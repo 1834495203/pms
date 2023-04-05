@@ -11,12 +11,13 @@
         <result column="pubilsher_id" property="pubilsherId" />
         <result column="state" property="state" />
         <result column="profile" property="profile" />
+        <result column="create_time" property="createTime" />
         <result column="create_date" property="createDate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        bid, title, content, correspond, pubilsher_id, state, profile, create_date
+        bid, title, content, correspond, pubilsher_id, state, profile, create_time, create_date
     </sql>
 
 </mapper>

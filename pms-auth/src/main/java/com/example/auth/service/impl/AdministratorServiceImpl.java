@@ -70,7 +70,7 @@ public class AdministratorServiceImpl extends ServiceImpl<AdministratorMapper, A
         if (administrator == null)
             return RestResponse.validFail("没有该对象!", Error.DATABASE_SELECT_FAILED);
         administrator.setPassword("");
-        if (administrator.getAuthority().equals("auth"))
+        if (administrator.getAuthority().equals(auth))
             return RestResponse.success(administrator, "success", Valid.DATABASE_SELECT_SUCCESS);
         return RestResponse.validFail("没有权限!", Error.UNAUTHORIZED);
     }

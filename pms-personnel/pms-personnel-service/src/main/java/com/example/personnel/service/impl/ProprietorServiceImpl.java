@@ -1,5 +1,6 @@
 package com.example.personnel.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
@@ -7,6 +8,7 @@ import com.example.exception.PMSException;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
 import com.example.personnel.mapper.ProprietorMapper;
+import com.example.personnel.model.dto.ResultUserBaseInfo;
 import com.example.personnel.model.po.Proprietor;
 import com.example.personnel.service.ProprietorService;
 import com.example.personnel.utils.UploadFiles;
@@ -57,5 +59,14 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
                                              Integer id) {
         Proprietor proprietor = proprietorMapper.selectById(id);
         return uploadFiles.uploadFile(filename, localFilePath, proprietorMapper, bucket, proprietor, minioClient);
+    }
+
+    @Override
+    public ResultUserBaseInfo getUserBaseInfo(Integer id) {
+        Proprietor proprietor = proprietorMapper.selectById(id);
+        if (proprietor == null) return null;
+        ResultUserBaseInfo resultUserBaseInfo = new ResultUserBaseInfo();
+        BeanUtil.copyProperties(proprietor, resultUserBaseInfo);
+        return resultUserBaseInfo;
     }
 }

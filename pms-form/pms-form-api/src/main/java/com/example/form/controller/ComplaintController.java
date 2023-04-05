@@ -59,6 +59,7 @@ public class ComplaintController {
      * @param pageParams 分页信息
      * @return 分页数据
      */
+    @Deprecated
     @ApiOperation("根据当前用户id获取其发送的投诉信息, 返回分页信息")
     @RequestMapping(value = "/complaint", method = RequestMethod.GET)
     public PageResult<Complaint> getComplaintByUserId(PageParams pageParams){
@@ -70,7 +71,7 @@ public class ComplaintController {
 
     /**
      * 条件查询投诉单的信息
-     * 仅前台能调用此api
+     * 都能调用此api
      * @param queryComplaintDto 查询条件
      * @return 分页数据
      */
@@ -81,11 +82,10 @@ public class ComplaintController {
         PageParams pageParams = new PageParams(pageNo);
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         UserThreadLocalDto userThreadLocalDto = authThreadLocal.get();
-        IsAuth.init(userThreadLocalDto).or("90093").or("910").start();
-        if (queryComplaintDto.getCreateTime() != null && queryComplaintDto.getQueryTime() == null)
-            queryComplaintDto.setQueryTime(0);
+        IsAuth.init(userThreadLocalDto).or("900").or("910").start();
         //TODO 实现条件查询投诉单的信息的service
-        return complaintService.selectComplaint(pageParams, queryComplaintDto);
+        String auth = userThreadLocalDto.getAuth();
+        return complaintService.selectComplaint(pageParams, queryComplaintDto, auth);
     }
 
     /**

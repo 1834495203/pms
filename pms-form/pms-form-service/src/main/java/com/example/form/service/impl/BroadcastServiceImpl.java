@@ -2,17 +2,22 @@ package com.example.form.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
+import com.example.form.client.UserInfoClient;
 import com.example.form.mapper.BroadcastMapper;
-import com.example.form.model.dto.QueryBroadcastDto;
-import com.example.form.model.dto.UpdateBroadcastDto;
+import com.example.form.mapper.PictMapper;
+import com.example.form.model.dto.*;
 import com.example.form.model.po.Broadcast;
+import com.example.form.model.po.Complaint;
 import com.example.form.service.BroadcastService;
+import com.example.form.util.General;
+import com.example.form.util.String2Map;
 import com.example.model.PageParams;
 import com.example.model.PageResult;
 import com.example.model.RestResponse;
@@ -21,8 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -38,10 +47,25 @@ public class BroadcastServiceImpl extends ServiceImpl<BroadcastMapper, Broadcast
     @Autowired
     private BroadcastMapper broadcastMapper;
 
+    @Autowired
+    private UserInfoClient userInfoClient;
+
+    @Autowired
+    private PictMapper pictMapper;
+
     @Override
     public RestResponse<Broadcast> postBroadcast(Broadcast broadcast) {
+        //string转map
+        Map<String, Integer> hashMap = String2Map.string2map(broadcast.getProfile());
+        StringBuffer sb = new StringBuffer();
+        hashMap.values().forEach(v->sb.append(v).append(","));
+        //减去最后的逗号
+        sb.deleteCharAt(sb.length()-1);
+        broadcast.setProfile(sb.toString());
+        if (broadcast.getCreateTime() == null)
+            broadcast.setCreateTime(LocalDateTime.now());
         if (broadcast.getCreateDate() == null)
-            broadcast.setCreateDate(LocalDateTime.now());
+            broadcast.setCreateDate(LocalDate.now());
         if (broadcastMapper.insert(broadcast) == 1)
             return RestResponse.success(broadcast, "发表成功", Valid.DATABASE_INSERT_SUCCESS);
         return RestResponse.validFail(broadcast, "发表失败", Error.DATABASE_INSERT_FAILED);
@@ -64,41 +88,38 @@ public class BroadcastServiceImpl extends ServiceImpl<BroadcastMapper, Broadcast
     }
 
     @Override
-    public PageResult<Broadcast> queryBroadcast(PageParams pageParams,
+    public PageResult<ResultBroadcastDto> queryBroadcast(PageParams pageParams,
                                                 QueryBroadcastDto queryBroadcastDto,
                                                 String userAuth) {
-        //鉴权
-        if (!userAuth.contains("90090") ||
-                !queryBroadcastDto.getCorrespond().equals(userAuth) ||
-        !queryBroadcastDto.getCorrespond().equals("999"))
-            throw new PMSException("没有权限调用此api", Error.UNAUTHORIZED);
-
-        //TODO 公告查询
+        //业主只能查询面向业主的公告
+        if (userAuth.contains("910")) queryBroadcastDto.setCorrespond("1");
         LambdaQueryWrapper<Broadcast> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Broadcast::getCorrespond, userAuth);
+
         //模糊查询
         if (queryBroadcastDto.getTitle() != null)
-            wrapper.like(Broadcast::getTitle, queryBroadcastDto.getTitle());
-        //时间查询
-        if (queryBroadcastDto.getCreateDate() != null){
-            if (queryBroadcastDto.getQueryTime() == null || queryBroadcastDto.getQueryTime() == 0)
-                wrapper.eq(Broadcast::getCreateDate, queryBroadcastDto.getCreateDate());
-            else if (queryBroadcastDto.getQueryTime() > 0)
-                wrapper.gt(Broadcast::getCreateDate, queryBroadcastDto.getCreateDate());
-            else wrapper.lt(Broadcast::getCreateDate, queryBroadcastDto.getCreateDate());
+        wrapper.like(Broadcast::getTitle, queryBroadcastDto.getTitle());
+
+        //根据发布的时间查询
+        if (queryBroadcastDto.getQueryDate() != null && queryBroadcastDto.getQueryDate().size() > 0){
+            wrapper.ge(Broadcast::getCreateDate, queryBroadcastDto.getQueryDate().get(0));
+            wrapper.le(Broadcast::getCreateDate, queryBroadcastDto.getQueryDate().get(1));
         }
-        //精确查询
-        HashMap<SFunction<Broadcast, ?>, Object> map = new HashMap<>();
-        map.put(Broadcast::getPubilsherId, queryBroadcastDto.getPubilsherId());
-        map.put(Broadcast::getState, queryBroadcastDto.getState());
-        wrapper.allEq(map);
-        //分页查询
-        Page<Broadcast> broadcastPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
-        Page<Broadcast> pages = broadcastMapper.selectPage(broadcastPage, wrapper);
-        if (pages.getTotal() == 0)
-            throw new PMSException("没有对应的信息", Error.DATABASE_SELECT_FAILED);
-        return new PageResult<>(pages.getRecords(), pages.getTotal(),
-                pageParams.getPageNo(), pageParams.getPageSize());
+
+        Page<Broadcast> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
+        Page<Broadcast> broadcastPage = broadcastMapper.selectPage(page, wrapper);
+
+        //查询图片信息
+        ArrayList<ResultBroadcastDto> resultBroadcastDto = new ArrayList<>();
+        new General().fillPictInfo(ResultBroadcastDto.class, resultBroadcastDto, broadcastPage, pictMapper);
+
+        resultBroadcastDto.forEach(res -> {
+            ResultUserBaseInfo authUserBaseInfoById = userInfoClient.getAuthUserBaseInfoById(res.getPubilsherId());
+            if (authUserBaseInfoById != null)
+                res.setUsername(authUserBaseInfoById.getUsername());
+        });
+
+        return new PageResult<>(resultBroadcastDto, page.getTotal(), pageParams.getPageNo(),
+                pageParams.getPageSize());
     }
 
     @Override

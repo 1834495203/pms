@@ -1,9 +1,9 @@
 package com.example.form.model.dto;
 
-import com.example.utils.Auth;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 查询公告条件
@@ -20,6 +20,7 @@ public class QueryBroadcastDto {
 
     /**
      * 对应发放的人员
+     * 0:所有；1:业主；2:员工
      */
     private String correspond;
 
@@ -29,23 +30,7 @@ public class QueryBroadcastDto {
     private Integer pubilsherId;
 
     /**
-     * 状态
-     */
-    private String state;
-
-    /**
-     * 媒体信息
-     */
-    private String profile;
-
-    /**
-     * 发表时间
-     */
-    private LocalDateTime createDate;
-
-    /**
      * 查询时间的条件
-     * -1 之前; 0 等于; 1 之后
      */
-    private Integer queryTime;
+    private List<LocalDateTime> queryDate;
 }

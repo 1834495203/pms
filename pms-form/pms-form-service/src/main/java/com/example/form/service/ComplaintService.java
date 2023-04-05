@@ -48,7 +48,7 @@ public interface ComplaintService extends IService<Complaint> {
      * @param queryComplaintDto 查询的条件
      * @return 分页内容
      */
-    PageResult<ResultComplaintDto> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto);
+    PageResult<ResultComplaintDto> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto, String auth);
 
     /**
      * 修改投诉中的相关信息

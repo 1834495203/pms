@@ -39,6 +39,8 @@ public class PictServiceImpl extends ServiceImpl<PictMapper, Pict> implements Pi
     @Autowired
     private PictMapper pictMapper;
 
+    private static final String FILE_URL = "http://api.mahiro.com/file/mediafiles/";
+
     @Override
     public RestResponse<Pict> uploadPict(String filename, String localFilePath, String type) {
         Pict pict = new Pict();
@@ -46,7 +48,7 @@ public class PictServiceImpl extends ServiceImpl<PictMapper, Pict> implements Pi
         pict.setType(type);
         //上传至minio
         String path = uploadFiles.uploadFile2Minio(filename, localFilePath, bucket, minioClient);
-        pict.setObjectName(path);
+        pict.setObjectName(FILE_URL+path);
 
         if (pictMapper.insert(pict) == 1)
             return RestResponse.success(pict, "上传成功", Valid.UPLOAD_FILE_SUCCESS);

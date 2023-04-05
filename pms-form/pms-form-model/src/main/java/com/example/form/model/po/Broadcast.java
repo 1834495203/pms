@@ -1,10 +1,10 @@
 package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.example.utils.Auth;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -59,8 +59,13 @@ public class Broadcast implements Serializable {
     /**
      * 发表时间
      */
+    private LocalDateTime createTime;
+
+    /**
+     * 发表日期
+     */
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createDate;
+    private LocalDate createDate;
 
 
 }

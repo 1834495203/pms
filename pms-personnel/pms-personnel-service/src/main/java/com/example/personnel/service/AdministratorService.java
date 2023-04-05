@@ -2,6 +2,7 @@ package com.example.personnel.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.RestResponse;
+import com.example.personnel.model.dto.ResultUserBaseInfo;
 import com.example.personnel.model.po.Administrator;
 
 import java.io.File;
@@ -24,4 +25,11 @@ public interface AdministratorService extends IService<Administrator> {
      * @return RR
      */
     RestResponse<?> upLoadUserProfile(String filename, String localFilePath, Integer id);
+
+    /**
+     * 通过id获取用户基本信息
+     * @param id id
+     * @return ResultUserBaseInfo
+     */
+    ResultUserBaseInfo getBaseInfoById(Integer id);
 }

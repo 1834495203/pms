@@ -2,6 +2,7 @@ package com.example.form.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.form.model.dto.QueryBroadcastDto;
+import com.example.form.model.dto.ResultBroadcastDto;
 import com.example.form.model.dto.UpdateBroadcastDto;
 import com.example.form.model.po.Broadcast;
 import com.example.model.PageParams;
@@ -39,7 +40,7 @@ public interface BroadcastService extends IService<Broadcast> {
       * @param userAuth 用户权限
      * @return PR
      */
-    PageResult<Broadcast> queryBroadcast(PageParams pageParams, QueryBroadcastDto queryBroadcastDto, String userAuth);
+    PageResult<ResultBroadcastDto> queryBroadcast(PageParams pageParams, QueryBroadcastDto queryBroadcastDto, String userAuth);
 
     /**
      * 根据id删除公告信息

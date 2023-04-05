@@ -7,15 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
+import com.example.form.client.UserInfoClient;
 import com.example.form.mapper.ComplaintMapper;
 import com.example.form.mapper.PictMapper;
-import com.example.form.model.dto.PostComplaintDto;
-import com.example.form.model.dto.QueryComplaintDto;
-import com.example.form.model.dto.ResultComplaintDto;
-import com.example.form.model.dto.UpdateComplaintDto;
+import com.example.form.model.dto.*;
 import com.example.form.model.po.Complaint;
 import com.example.form.model.po.Pict;
 import com.example.form.service.ComplaintService;
+import com.example.form.util.General;
 import com.example.form.util.String2Map;
 import com.example.model.PageParams;
 import com.example.model.PageResult;
@@ -46,6 +45,9 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
 
     @Autowired
     private PictMapper pictMapper;
+
+    @Autowired
+    private UserInfoClient userInfoClient;
 
     @Override
     public RestResponse<Complaint> postComplaint(PostComplaintDto complaint) {
@@ -103,53 +105,41 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
     }
 
     @Override
-    public PageResult<ResultComplaintDto> selectComplaint(PageParams pageParams, QueryComplaintDto queryComplaintDto) {
+    public PageResult<ResultComplaintDto> selectComplaint(PageParams pageParams,
+                                                          QueryComplaintDto queryComplaintDto,
+                                                          String auth) {
         LambdaQueryWrapper<Complaint> wrapper = new LambdaQueryWrapper<>();
         //根据状态查询
         if (queryComplaintDto.getState() != null)
             wrapper.eq(Complaint::getState, queryComplaintDto.getState());
         //根据业主id查询
-        if (queryComplaintDto.getPubilsherId() != null)
+        if (queryComplaintDto.getPubilsherId() != null && auth.contains("910"))
             wrapper.eq(Complaint::getPubilsherId, queryComplaintDto.getPubilsherId());
         //根据投诉标题查询
         if (queryComplaintDto.getTitle() != null)
             wrapper.like(Complaint::getTitle, queryComplaintDto.getTitle());
         //根据发布的时间查询
-        if (queryComplaintDto.getCreateDate() != null){
-            //之前
-            if (queryComplaintDto.getQueryTime() == -1)
-                wrapper.lt(Complaint::getCreateDate, queryComplaintDto.getCreateDate());
-            //之后
-            else if (queryComplaintDto.getQueryTime() == 1)
-                wrapper.gt(Complaint::getCreateDate, queryComplaintDto.getCreateDate());
-            //等于
-            else wrapper.like(Complaint::getCreateDate, queryComplaintDto.getCreateDate());
+        if (queryComplaintDto.getQueryTime() != null && queryComplaintDto.getQueryTime().size() > 0){
+            wrapper.ge(Complaint::getCreateDate, queryComplaintDto.getQueryTime().get(0));
+            wrapper.le(Complaint::getCreateDate, queryComplaintDto.getQueryTime().get(1));
         }
+
         Page<Complaint> complaintPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
         Page<Complaint> page = complaintMapper.selectPage(complaintPage, wrapper);
+
         //查询图片信息
         ArrayList<ResultComplaintDto> resultComplaintDto = new ArrayList<>();
-        for (Complaint record : page.getRecords()) {
-            //遍历分页的数据
-            ResultComplaintDto result = new ResultComplaintDto();
-            BeanUtil.copyProperties(record, result);
-            String profile = record.getProfile();
-            if (profile != null){
-                String[] split = profile.split(",");
-                ArrayList<String> names = new ArrayList<>();
-                for (String s : split) {
-                    Pict pict = pictMapper.selectById(s);
-                    //将图片信息写入结果
-                    names.add(pict.getObjectName());
-                    //设置图片信息对应的投诉id
-                    if (pict.getProfileId() == null)
-                        pict.setProfileId(record.getCid());
-                    pictMapper.updateById(pict);
-                }
-                result.setObjectName(names);
+        new General().fillPictInfo(ResultComplaintDto.class, resultComplaintDto, page, pictMapper);
+
+        //写入用户信息
+        resultComplaintDto.forEach(res->{
+            ResultUserBaseInfo propUserBaseInfoById = userInfoClient.getPropUserBaseInfoById(res.getPubilsherId());
+            if (propUserBaseInfoById != null){
+                res.setUsername(propUserBaseInfoById.getUsername());
+                res.setUserProfile(propUserBaseInfoById.getProfile());
             }
-            resultComplaintDto.add(result);
-        }
+        });
+
         return new PageResult<>(resultComplaintDto, page.getTotal(), pageParams.getPageNo(),
                 pageParams.getPageSize());
     }

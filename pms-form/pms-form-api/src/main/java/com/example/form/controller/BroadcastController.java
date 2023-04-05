@@ -2,6 +2,7 @@ package com.example.form.controller;
 
 import com.example.config.AuthThreadLocal;
 import com.example.form.model.dto.QueryBroadcastDto;
+import com.example.form.model.dto.ResultBroadcastDto;
 import com.example.form.model.dto.UpdateBroadcastDto;
 import com.example.form.model.po.Broadcast;
 import com.example.form.service.BroadcastService;
@@ -37,7 +38,7 @@ public class BroadcastController {
      */
     @ApiOperation("发表公告")
     @RequestMapping(value = "/broadcast", method = RequestMethod.PUT)
-    public RestResponse<Broadcast> postBroadcast(@RequestBody Broadcast broadcast){
+    public RestResponse<Broadcast> postBroadcast(@RequestBody Broadcast broadcast) {
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         IsAuth.init(authThreadLocal).or("900").start();
         if (broadcast.getPubilsherId() == null)
@@ -67,8 +68,8 @@ public class BroadcastController {
      * @return PR
      */
     @ApiOperation("查询公告")
-    @RequestMapping(value = "/broadcast/query/{pageNo}", method = RequestMethod.GET)
-    public PageResult<Broadcast> queryBroadcast(@PathVariable Long pageNo, QueryBroadcastDto queryBroadcastDto) {
+    @RequestMapping(value = "/broadcast/query/{pageNo}", method = RequestMethod.POST)
+    public PageResult<ResultBroadcastDto> queryBroadcast(@PathVariable Long pageNo, @RequestBody QueryBroadcastDto queryBroadcastDto) {
         PageParams pageParams = new PageParams(pageNo);
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         String userAuth = authThreadLocal.get().getAuth();

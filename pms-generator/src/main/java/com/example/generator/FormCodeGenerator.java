@@ -24,8 +24,8 @@ public class FormCodeGenerator {
     private static final String DATA_SOURCE_PASSWORD  = "123456";
     //生成的表
     private static final String[] TABLE_NAMES = new String[]{
-//            "broadcast",
-            "complaint",
+            "broadcast",
+//            "complaint",
 //            "facility",
 //            "repair",
 //            "pict"

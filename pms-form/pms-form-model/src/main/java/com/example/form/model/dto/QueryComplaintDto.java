@@ -7,6 +7,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 查询投诉表需要的信息
@@ -19,17 +20,16 @@ public class QueryComplaintDto {
      */
     private String state;
 
-    /**
-     * 上报时间
-     */
-    @ApiModelProperty(value = "上报时间")
-    private LocalDateTime createTime;
+//    /**
+//     * 上报时间
+//     */
+//    @ApiModelProperty(value = "上报时间")
+//    private LocalDateTime createTime;
 
     /**
      * 查询时间的条件
-     * -1 之前; 0 等于; 1 之后
      */
-    private Integer queryTime;
+    private List<LocalDateTime> queryTime;
 
     /**
      * 标题
@@ -42,9 +42,9 @@ public class QueryComplaintDto {
      */
     private Integer pubilsherId;
 
-    /**
-     * 发布日期
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDate createDate;
+//    /**
+//     * 发布日期
+//     */
+//    @TableField(fill = FieldFill.INSERT)
+//    private LocalDate createDate;
 }

@@ -28,19 +28,19 @@ public class UpdateComplaintDto {
     /**
      * 状态 仅前台修改
      */
-    @Auth(auth = "90093")
+    @Auth(auth = "900")
     private String state;
 
     /**
      * 处理过程 仅前台修改
      */
-    @Auth(auth = "90093")
+    @Auth(auth = "900")
     private String process;
 
     /**
      * 解决人id 仅前台修改
      */
-    @Auth(auth = "90093")
+    @Auth(auth = "900")
     private Integer solverId;
 
     /**

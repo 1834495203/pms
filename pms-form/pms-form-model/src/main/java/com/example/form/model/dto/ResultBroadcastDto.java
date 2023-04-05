@@ -1,6 +1,6 @@
 package com.example.form.model.dto;
 
-import com.example.form.model.po.Complaint;
+import com.example.form.model.po.Broadcast;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,11 +8,11 @@ import java.util.List;
 
 /**
  * @author GLaDOS
- * @date 2023/4/3 23:17
+ * @date 2023/4/5 18:14
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ResultComplaintDto extends Complaint {
+public class ResultBroadcastDto extends Broadcast {
 
     /**
      * 图片在minio的地址
@@ -20,12 +20,7 @@ public class ResultComplaintDto extends Complaint {
     private List<String> objectName;
 
     /**
-     * 用户名
+     * 发布人用户名
      */
     private String username;
-
-    /**
-     * 用户头像
-     */
-    private String userProfile;
 }

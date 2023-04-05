@@ -2,6 +2,7 @@ package com.example.personnel.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.RestResponse;
+import com.example.personnel.model.dto.ResultUserBaseInfo;
 import com.example.personnel.model.po.Proprietor;
 
 /**
@@ -23,4 +24,10 @@ public interface ProprietorService extends IService<Proprietor> {
      */
     RestResponse<?> upLoadUserProfile(String filename, String localFilePath, Integer id);
 
+    /**
+     * 通过id搜索用户基本信息
+     * @param id 用户id
+     * @return ResultUserBaseInfo
+     */
+    ResultUserBaseInfo getUserBaseInfo(Integer id);
 }

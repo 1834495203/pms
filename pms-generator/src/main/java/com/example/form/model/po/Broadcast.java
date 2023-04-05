@@ -1,6 +1,7 @@
 package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.FieldFill;
@@ -61,8 +62,13 @@ public class Broadcast implements Serializable {
     /**
      * 发表时间
      */
+    private LocalDateTime createTime;
+
+    /**
+     * 发表日期
+     */
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createDate;
+    private LocalDate createDate;
 
 
 }

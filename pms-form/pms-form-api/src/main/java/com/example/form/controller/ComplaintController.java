@@ -113,8 +113,8 @@ public class ComplaintController {
     @RequestMapping(value = "/complaint", method = RequestMethod.POST)
     public RestResponse<Complaint> updateComplaint(@RequestBody UpdateComplaintDto updateComplaintDto){
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
-        //910为业主, 90093为前台
-        IsAuth.init(authThreadLocal).or("90093").or("910").start();
+        //910为业主, 900为管理员
+        IsAuth.init(authThreadLocal).or("900").or("910").start();
         return complaintService.updateComplaint(authThreadLocal.get().getAuth(), updateComplaintDto);
     }
 

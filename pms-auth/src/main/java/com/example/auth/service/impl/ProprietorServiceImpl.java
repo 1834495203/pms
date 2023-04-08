@@ -1,9 +1,12 @@
 package com.example.auth.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.auth.config.JwtConfig;
+import com.example.auth.dto.ResultUserBaseInfo;
+import com.example.auth.util.UploadFiles;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
 import com.example.auth.mapper.ProprietorMapper;
@@ -11,14 +14,14 @@ import com.example.auth.po.Proprietor;
 import com.example.auth.service.ProprietorService;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
+import io.minio.MinioClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -36,6 +39,15 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
 
     @Resource(name = "JwtConfigBase")
     private JwtConfig jwtConfig;
+
+    @Value("${minio.bucket.files}")
+    private String bucket;
+
+    @Autowired
+    private MinioClient minioClient;
+
+    @Autowired
+    private UploadFiles uploadFiles;
 
     @Override
     public String loginForProprietor(Proprietor proprietor) {
@@ -76,5 +88,23 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
         if (proprietor.getStatus().equals(auth))
             return RestResponse.success(proprietor, "success", Valid.DATABASE_SELECT_SUCCESS);
         return RestResponse.validFail("没有该权限", Error.UNAUTHORIZED);
+    }
+
+    @Transactional
+    @Override
+    public RestResponse<?> upLoadUserProfile(String filename,
+                                             String localFilePath,
+                                             Integer id) {
+        Proprietor proprietor = proprietorMapper.selectById(id);
+        return uploadFiles.uploadFile(filename, localFilePath, proprietorMapper, bucket, proprietor, minioClient);
+    }
+
+    @Override
+    public ResultUserBaseInfo getUserBaseInfo(Integer id) {
+        Proprietor proprietor = proprietorMapper.selectById(id);
+        if (proprietor == null) return null;
+        ResultUserBaseInfo resultUserBaseInfo = new ResultUserBaseInfo();
+        BeanUtil.copyProperties(proprietor, resultUserBaseInfo);
+        return resultUserBaseInfo;
     }
 }

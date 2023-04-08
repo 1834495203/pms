@@ -2,6 +2,7 @@ package com.example.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.auth.po.Administrator;
+import com.example.auth.dto.ResultUserBaseInfo;
 import com.example.model.RestResponse;
 
 /**
@@ -35,4 +36,20 @@ public interface AdministratorService extends IService<Administrator> {
      * @return RR
      */
     RestResponse<Administrator> getCurrentAdminInfo(Integer id, String auth);
+
+    /**
+     * 用户上传图片
+     * @param filename 图片名字
+     * @param localFilePath 本地路径
+     * @param id 用户id
+     * @return RR
+     */
+    RestResponse<?> upLoadUserProfile(String filename, String localFilePath, Integer id);
+
+    /**
+     * 通过id获取用户基本信息
+     * @param id id
+     * @return ResultUserBaseInfo
+     */
+    ResultUserBaseInfo getBaseInfoById(Integer id);
 }

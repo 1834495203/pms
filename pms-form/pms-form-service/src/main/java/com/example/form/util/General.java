@@ -18,7 +18,7 @@ import java.util.List;
 public class General {
 
     /**
-     *
+     * 将表中的profile及保存图片信息id的表转换为图片的实际地址
      * @param dClazz dto.class
      * @param listDto Array(dto)
      * @param <O> po

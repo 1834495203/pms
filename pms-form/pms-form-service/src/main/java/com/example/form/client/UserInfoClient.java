@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author GLaDOS
  * @date 2023/4/5 21:49
  */
-@FeignClient(value = "personnel-api")
+@FeignClient(value = "auth-service")
 public interface UserInfoClient {
 
     /**
@@ -19,7 +19,7 @@ public interface UserInfoClient {
      * @param id 管理员id
      * @return ResultUserBaseInfo
      */
-    @RequestMapping(value = "person/info/auth/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "auth/info/auth/{id}", method = RequestMethod.GET)
     ResultUserBaseInfo getAuthUserBaseInfoById(@PathVariable("id") Integer id);
 
     /**
@@ -27,6 +27,6 @@ public interface UserInfoClient {
      * @param id 业主id
      * @return ResultUserBaseInfo
      */
-    @RequestMapping(value = "person/info/prop/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "auth/info/prop/{id}", method = RequestMethod.GET)
     ResultUserBaseInfo getPropUserBaseInfoById(@PathVariable("id") Integer id);
 }

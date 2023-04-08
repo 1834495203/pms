@@ -1,5 +1,6 @@
 package com.example.auth.controller;
 
+import com.example.auth.dto.ResultUserBaseInfo;
 import com.example.auth.service.AdministratorService;
 import com.example.auth.service.ProprietorService;
 import com.example.config.AuthThreadLocal;
@@ -10,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,5 +49,20 @@ public class UserInfoController {
         else if (auth.contains("900"))
             return administratorService.getCurrentAdminInfo(id, auth);
         return RestResponse.validFail("没有权限!", Error.UNAUTHORIZED);
+    }
+
+    /**
+     * 获取管理员用户基本信息
+     * @param id id
+     * @return RR
+     */
+    @RequestMapping(value = "info/auth/{id}", method = RequestMethod.GET)
+    public ResultUserBaseInfo getAdminBaseInfoById(@PathVariable Integer id){
+        return administratorService.getBaseInfoById(id);
+    }
+
+    @RequestMapping(value = "info/prop/{id}", method = RequestMethod.GET)
+    public ResultUserBaseInfo getPropBaseInfoById(@PathVariable Integer id){
+        return proprietorService.getUserBaseInfo(id);
     }
 }

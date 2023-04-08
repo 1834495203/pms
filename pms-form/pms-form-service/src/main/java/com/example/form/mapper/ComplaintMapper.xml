@@ -14,11 +14,12 @@
         <result column="solver_id" property="solverId" />
         <result column="title" property="title" />
         <result column="create_date" property="createDate" />
+        <result column="process_date" property="processDate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        cid, pubilsher_id, content, state, create_time, process, profile, solver_id, title, create_date
+        cid, pubilsher_id, content, state, create_time, process, profile, solver_id, title, create_date, process_date
     </sql>
 
 </mapper>

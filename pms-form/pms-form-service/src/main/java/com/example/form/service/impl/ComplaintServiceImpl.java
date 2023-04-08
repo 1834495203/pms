@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -161,6 +162,7 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
         if (userAuth.contains("910") && !cFromDb.getPubilsherId().equals(updateComplaintDto.getPubilsherId()))
             throw new PMSException("不能修改除自己以外的信息", Error.UNAUTHORIZED);
 
+        cFromDb.setProcessDate(LocalDateTime.now());
         //忽略null字段
         BeanUtil.copyProperties(afterAuth, cFromDb, CopyOptions.create().ignoreNullValue());
         if (complaintMapper.updateById(cFromDb) == 1)

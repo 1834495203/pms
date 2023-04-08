@@ -26,4 +26,4 @@ spring:
             refresh: true
       server-addr: localhost:8848
   profiles:
-    active: dev
+    active: deva

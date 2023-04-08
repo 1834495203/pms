@@ -74,4 +74,11 @@ public class Complaint implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDate createDate;
+
+    /**
+     * 解决时间
+     */
+    private LocalDateTime processDate;
+
+
 }

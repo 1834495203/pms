@@ -1,8 +1,6 @@
 package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.*;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 投诉
+ * 
  * </p>
  *
  * @author GLaDOS
@@ -36,7 +34,6 @@ public class Complaint implements Serializable {
     /**
      * 内容
      */
-    @ApiParam(value = "投诉内容", required = true)
     private String content;
 
     /**
@@ -47,7 +44,6 @@ public class Complaint implements Serializable {
     /**
      * 上报时间
      */
-    @ApiParam(value = "上报时间", required = true)
     private LocalDateTime createTime;
 
     /**
@@ -68,7 +64,6 @@ public class Complaint implements Serializable {
     /**
      * 标题
      */
-    @ApiParam(value = "标题", required = true)
     private String title;
 
     /**
@@ -76,4 +71,11 @@ public class Complaint implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDate createDate;
+
+    /**
+     * 解决时间
+     */
+    private LocalDateTime processDate;
+
+
 }

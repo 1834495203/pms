@@ -12,10 +12,6 @@
       <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form-service/pms-form-service.iml" filepath="$PROJECT_DIR$/pms-form/pms-form-service/pms-form-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-generator/pms-generator.iml" filepath="$PROJECT_DIR$/pms-generator/pms-generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-parent/pms-parent.iml" filepath="$PROJECT_DIR$/pms-parent/pms-parent.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pms-personnel/pms-personnel.iml" filepath="$PROJECT_DIR$/pms-personnel/pms-personnel.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pms-personnel/pms-personnel-api/pms-personnel-api.iml" filepath="$PROJECT_DIR$/pms-personnel/pms-personnel-api/pms-personnel-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pms-personnel/pms-personnel-model/pms-personnel-model.iml" filepath="$PROJECT_DIR$/pms-personnel/pms-personnel-model/pms-personnel-model.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pms-personnel/pms-personnel-service/pms-personnel-service.iml" filepath="$PROJECT_DIR$/pms-personnel/pms-personnel-service/pms-personnel-service.iml" />
     </modules>
   </component>
 </project>

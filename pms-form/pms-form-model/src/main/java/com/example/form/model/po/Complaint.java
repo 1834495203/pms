@@ -77,5 +77,15 @@ public class Complaint implements Serializable {
      */
     private LocalDateTime processDate;
 
+    /**
+     * 评分
+     */
+    private Integer rate;
+
+    /**
+     * 意见与建议
+     */
+    private String opinion;
+
 
 }

@@ -48,4 +48,14 @@ public class UpdateComplaintDto {
      */
     @Auth(auth = "910")
     private String title;
+
+    /**
+     * 评分
+     */
+    private Integer rate;
+
+    /**
+     * 意见
+     */
+    private String opinion;
 }

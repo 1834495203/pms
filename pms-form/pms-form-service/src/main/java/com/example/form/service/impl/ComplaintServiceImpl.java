@@ -125,7 +125,7 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
             wrapper.le(Complaint::getCreateDate, queryComplaintDto.getQueryTime().get(1));
         }
 
-        Page<Complaint> complaintPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
+        Page<Complaint> complaintPage = new Page<>(pageParams.getPageNo(), pageParams.getPageSize(), true);
         Page<Complaint> page = complaintMapper.selectPage(complaintPage, wrapper);
 
         //查询图片信息
@@ -139,6 +139,10 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintMapper, Complaint
                 res.setUsername(propUserBaseInfoById.getUsername());
                 res.setUserProfile(propUserBaseInfoById.getProfile());
             }
+            if (res.getSolverId() != null){
+                res.setResultUserBaseInfo(userInfoClient.getAuthUserBaseInfoById(res.getSolverId()));
+            }
+
         });
 
         return new PageResult<>(resultComplaintDto, page.getTotal(), pageParams.getPageNo(),

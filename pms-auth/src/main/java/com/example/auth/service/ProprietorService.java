@@ -1,9 +1,14 @@
 package com.example.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.auth.dto.QueryPersonnelDto;
 import com.example.auth.dto.ResultUserBaseInfo;
 import com.example.auth.po.Proprietor;
+import com.example.model.PageParams;
+import com.example.model.PageResult;
 import com.example.model.RestResponse;
+
+import java.util.List;
 
 /**
  * <p>
@@ -53,4 +58,10 @@ public interface ProprietorService extends IService<Proprietor> {
      * @return ResultUserBaseInfo
      */
     ResultUserBaseInfo getUserBaseInfo(Integer id);
+
+    /**
+     * 获取全部业主信息
+     * @return RR
+     */
+    PageResult<Proprietor> getListProprietor(PageParams pageParams, QueryPersonnelDto queryPersonnelDto);
 }

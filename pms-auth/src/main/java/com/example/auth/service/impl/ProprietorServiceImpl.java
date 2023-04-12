@@ -3,8 +3,10 @@ package com.example.auth.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.auth.config.JwtConfig;
+import com.example.auth.dto.QueryPersonnelDto;
 import com.example.auth.dto.ResultUserBaseInfo;
 import com.example.auth.util.UploadFiles;
 import com.example.exception.Error;
@@ -12,6 +14,8 @@ import com.example.exception.PMSException;
 import com.example.auth.mapper.ProprietorMapper;
 import com.example.auth.po.Proprietor;
 import com.example.auth.service.ProprietorService;
+import com.example.model.PageParams;
+import com.example.model.PageResult;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
 import io.minio.MinioClient;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -106,5 +111,18 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
         ResultUserBaseInfo resultUserBaseInfo = new ResultUserBaseInfo();
         BeanUtil.copyProperties(proprietor, resultUserBaseInfo);
         return resultUserBaseInfo;
+    }
+
+    @Override
+    public PageResult<Proprietor> getListProprietor(PageParams pageParams, QueryPersonnelDto queryPersonnelDto) {
+        LambdaQueryWrapper<Proprietor> wrapper = new LambdaQueryWrapper<>();
+        String username, name;
+        if ((username = queryPersonnelDto.getUsername()) != null)
+            wrapper.like(Proprietor::getUsername, username);
+        if ((name = queryPersonnelDto.getName()) != null)
+            wrapper.like(Proprietor::getName, name);
+        Page<Proprietor> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
+        Page<Proprietor> proprietorPage = proprietorMapper.selectPage(page, wrapper);
+        return new PageResult<>(proprietorPage.getRecords(), proprietorPage.getTotal(), pageParams.getPageNo(), pageParams.getPageSize());
     }
 }

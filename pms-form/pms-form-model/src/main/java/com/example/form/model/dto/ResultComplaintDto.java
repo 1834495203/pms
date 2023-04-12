@@ -28,4 +28,9 @@ public class ResultComplaintDto extends Complaint {
      * 用户头像
      */
     private String userProfile;
+
+    /**
+     * 解决人信息
+     */
+    private ResultUserBaseInfo resultUserBaseInfo;
 }

@@ -38,7 +38,7 @@ public class QueryComplaintDto {
     private String title;
 
     /**
-     * 发送人信息
+     * 发送人id
      */
     private Integer pubilsherId;
 

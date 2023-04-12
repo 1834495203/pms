@@ -1,20 +1,24 @@
 package com.example.auth.controller;
 
+import com.example.auth.dto.QueryPersonnelDto;
 import com.example.auth.dto.ResultUserBaseInfo;
+import com.example.auth.po.Proprietor;
 import com.example.auth.service.AdministratorService;
 import com.example.auth.service.ProprietorService;
 import com.example.config.AuthThreadLocal;
 import com.example.exception.Error;
+import com.example.model.PageParams;
+import com.example.model.PageResult;
 import com.example.model.RestResponse;
 import com.example.model.UserThreadLocalDto;
+import com.example.utils.IsAuth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 用户信息的CURD
@@ -54,15 +58,36 @@ public class UserInfoController {
     /**
      * 获取管理员用户基本信息
      * @param id id
-     * @return RR
+     * @return ResultUserBaseInfo
      */
+    @ApiOperation("获取管理员用户基本信息")
     @RequestMapping(value = "info/auth/{id}", method = RequestMethod.GET)
     public ResultUserBaseInfo getAdminBaseInfoById(@PathVariable Integer id){
         return administratorService.getBaseInfoById(id);
     }
 
+    /**
+     * 获取业主用户基本信息
+     * @param id id
+     * @return ResultUserBaseInfo
+     */
+    @ApiOperation("获取业主用户基本信息")
     @RequestMapping(value = "info/prop/{id}", method = RequestMethod.GET)
     public ResultUserBaseInfo getPropBaseInfoById(@PathVariable Integer id){
         return proprietorService.getUserBaseInfo(id);
+    }
+
+    /**
+     * 获取全部用户信息
+     * @return RR
+     */
+    @ApiOperation("获取用户信息")
+    @RequestMapping(value = "/info/prop/{pageNo}", method = RequestMethod.POST)
+    public PageResult<Proprietor> selectProprietors(@RequestBody QueryPersonnelDto queryPersonnelDto,
+                                                    @PathVariable Long pageNo){
+        PageParams pageParams = new PageParams(pageNo);
+        ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
+        IsAuth.init(authThreadLocal).or("900").start();
+        return proprietorService.getListProprietor(pageParams, queryPersonnelDto);
     }
 }

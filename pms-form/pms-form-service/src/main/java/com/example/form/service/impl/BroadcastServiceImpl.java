@@ -28,10 +28,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -91,8 +90,6 @@ public class BroadcastServiceImpl extends ServiceImpl<BroadcastMapper, Broadcast
     public PageResult<ResultBroadcastDto> queryBroadcast(PageParams pageParams,
                                                 QueryBroadcastDto queryBroadcastDto,
                                                 String userAuth) {
-        //业主只能查询面向业主的公告
-        if (userAuth.contains("910")) queryBroadcastDto.setCorrespond("1");
         LambdaQueryWrapper<Broadcast> wrapper = new LambdaQueryWrapper<>();
 
         //模糊查询
@@ -118,7 +115,13 @@ public class BroadcastServiceImpl extends ServiceImpl<BroadcastMapper, Broadcast
                 res.setUsername(authUserBaseInfoById.getUsername());
         });
 
-        return new PageResult<>(resultBroadcastDto, page.getTotal(), pageParams.getPageNo(),
+        List<ResultBroadcastDto> collect = resultBroadcastDto;
+        //如果查询者为业主
+        if (userAuth.contains("910")) {
+            collect = resultBroadcastDto.stream().filter(res -> !res.getCorrespond().equals("900")).collect(Collectors.toList());
+        }
+
+        return new PageResult<>(collect, page.getTotal(), pageParams.getPageNo(),
                 pageParams.getPageSize());
     }
 

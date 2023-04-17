@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cash.mapper.PropertyExpenseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.cash.model.po.PropertyExpense">
+        <id column="eid" property="eid" />
+        <result column="payer_id" property="payerId" />
+        <result column="create_time" property="createTime" />
+        <result column="state" property="state" />
+        <result column="method" property="method" />
+        <result column="amount" property="amount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        eid, payer_id, create_time, state, method, amount
+    </sql>
+
+</mapper>

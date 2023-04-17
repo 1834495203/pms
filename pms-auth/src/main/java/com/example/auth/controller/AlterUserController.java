@@ -1,5 +1,7 @@
 package com.example.auth.controller;
 
+import com.example.auth.dto.UpdatePropDto;
+import com.example.auth.po.Proprietor;
 import com.example.auth.service.AdministratorService;
 import com.example.auth.service.ProprietorService;
 import com.example.config.AuthThreadLocal;
@@ -7,14 +9,12 @@ import com.example.exception.Error;
 import com.example.exception.PMSException;
 import com.example.model.RestResponse;
 import com.example.model.UserThreadLocalDto;
+import com.example.utils.IsAuth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -65,5 +65,14 @@ public class AlterUserController {
         boolean delete = temp.delete();
         if (delete) log.info("临时文件: {} 删除成功", file.getOriginalFilename());
         return r;
+    }
+
+    @RequestMapping(value = "/alter/info/prop", method = RequestMethod.POST)
+    public RestResponse<Proprietor> updatePropInfo(@RequestBody UpdatePropDto updatePropDto){
+        ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
+        IsAuth.init(authThreadLocal).or("900").start();
+        log.info(updatePropDto.toString());
+        log.info(updatePropDto.getAddress().split(",")[3]);
+        return proprietorService.updateProprietor(updatePropDto);
     }
 }

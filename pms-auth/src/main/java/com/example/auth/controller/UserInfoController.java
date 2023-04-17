@@ -1,6 +1,7 @@
 package com.example.auth.controller;
 
 import com.example.auth.dto.QueryPersonnelDto;
+import com.example.auth.dto.QueryPropDto;
 import com.example.auth.dto.ResultUserBaseInfo;
 import com.example.auth.po.Proprietor;
 import com.example.auth.service.AdministratorService;
@@ -83,8 +84,8 @@ public class UserInfoController {
      */
     @ApiOperation("获取用户信息")
     @RequestMapping(value = "/info/prop/{pageNo}", method = RequestMethod.POST)
-    public PageResult<Proprietor> selectProprietors(@RequestBody QueryPersonnelDto queryPersonnelDto,
-                                                    @PathVariable Long pageNo){
+    public PageResult<QueryPropDto> selectProprietors(@RequestBody QueryPersonnelDto queryPersonnelDto,
+                                                      @PathVariable Long pageNo){
         PageParams pageParams = new PageParams(pageNo);
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         IsAuth.init(authThreadLocal).or("900").start();

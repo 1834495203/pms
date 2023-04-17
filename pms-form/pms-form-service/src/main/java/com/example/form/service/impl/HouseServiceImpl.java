@@ -1,12 +1,15 @@
 package com.example.form.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
 import com.example.form.mapper.HouseMapper;
+import com.example.form.mapper.InformationMapper;
 import com.example.form.model.dto.ResultHouseDto;
 import com.example.form.model.po.House;
+import com.example.form.model.po.Information;
 import com.example.form.service.HouseService;
 import com.example.model.RestResponse;
 import com.example.model.Valid;
@@ -15,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -30,12 +34,16 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
     @Autowired
     private HouseMapper houseMapper;
 
+    @Autowired
+    private InformationMapper informationMapper;
+
     @Override
-    public RestResponse<ResultHouseDto> getBuildingInfoById(Integer id) {
+    public RestResponse<ResultHouseDto> getBuildingInfoById(Integer id, String type) {
         Integer parent = 0;
         Map<Integer, List<ResultHouseDto>> houseDtoHashMap = new LinkedHashMap<>();
         ArrayList<ResultHouseDto> resultHouseDto = new ArrayList<>();
         List<House> houseInfoByOrder = houseMapper.getHouseInfoByOrder(id);
+
         if (houseInfoByOrder == null)
             return RestResponse.validFail("没有对象", Error.DATABASE_SELECT_FAILED);
         try{
@@ -49,6 +57,7 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
                 }
                 ResultHouseDto temp = new ResultHouseDto();
                 BeanUtil.copyProperties(house, temp);
+                temp.setToDisLabel(temp.getValue()+temp.getLabel());
                 resultHouseDto.add(temp);
             }
             if (resultHouseDto.size() > 0)
@@ -103,5 +112,30 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         houseMapper.deleteById(resultHouseDto.getHid());
         if (size+1 == total+1) return RestResponse.success(resultHouseDto, "删除成功", Valid.DATABASE_DELETE_SUCCESS);
         return RestResponse.validFail("删除失败", Error.DATABASE_DELETE_FAILED);
+    }
+
+    @Override
+    public RestResponse<ResultHouseDto> selectAssignedAddress(String address) {
+        List<String> collect = Arrays.stream(address.split(",")).collect(Collectors.toList());
+        LambdaQueryWrapper<House> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(House::getHid, collect);
+        List<House> houses = houseMapper.selectList(wrapper);
+
+        ResultHouseDto finalResult = new ResultHouseDto();
+        ResultHouseDto parent = finalResult;
+        BeanUtil.copyProperties(houses.get(0), finalResult);
+        finalResult.setToDisLabel(finalResult.getValue()+finalResult.getLabel());
+        for (int i = 1; i < houses.size(); i++) {
+            ArrayList<ResultHouseDto> temp = new ArrayList<>();
+            ResultHouseDto res = new ResultHouseDto();
+            BeanUtil.copyProperties(houses.get(i), res);
+            res.setToDisLabel(res.getValue()+res.getLabel());
+            temp.add(res);
+            parent.setChildren(temp);
+            parent = res;
+        }
+
+        log.info(finalResult.toString());
+        return RestResponse.success(finalResult, "获取成功", Valid.DATABASE_SELECT_SUCCESS);
     }
 }

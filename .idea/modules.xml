@@ -6,6 +6,10 @@
       <module fileurl="file://$PROJECT_DIR$/pms.iml" filepath="$PROJECT_DIR$/pms.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-auth/pms-auth.iml" filepath="$PROJECT_DIR$/pms-auth/pms-auth.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-base/pms-base.iml" filepath="$PROJECT_DIR$/pms-base/pms-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-expense/pms-expense.iml" filepath="$PROJECT_DIR$/pms-expense/pms-expense.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-expense/pms-expense-api/pms-expense-api.iml" filepath="$PROJECT_DIR$/pms-expense/pms-expense-api/pms-expense-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-expense/pms-expense-model/pms-expense-model.iml" filepath="$PROJECT_DIR$/pms-expense/pms-expense-model/pms-expense-model.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pms-expense/pms-expense-service/pms-expense-service.iml" filepath="$PROJECT_DIR$/pms-expense/pms-expense-service/pms-expense-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form.iml" filepath="$PROJECT_DIR$/pms-form/pms-form.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form-api/pms-form-api.iml" filepath="$PROJECT_DIR$/pms-form/pms-form-api/pms-form-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/pms-form/pms-form-model/pms-form-model.iml" filepath="$PROJECT_DIR$/pms-form/pms-form-model/pms-form-model.iml" />

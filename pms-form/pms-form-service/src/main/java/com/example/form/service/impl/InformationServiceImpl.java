@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -34,5 +36,25 @@ public class InformationServiceImpl extends ServiceImpl<InformationMapper, Infor
         if (information == null)
             RestResponse.validFail("暂无该房产的信息", Error.DATABASE_SELECT_FAILED);
         return RestResponse.success(information, "查询成功", Valid.DATABASE_SELECT_SUCCESS);
+    }
+
+    @Override
+    public Information bindHouseInfo2Prop(Integer pid, Integer hid) {
+        LambdaQueryWrapper<Information> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Information::getPid, pid);
+        Information information = informationMapper.selectOne(wrapper);
+        if (information == null){
+            //如果没有绑定信息
+            information = new Information();
+            information.setPid(pid);
+            information.setHid(hid);
+            information.setState("");
+            informationMapper.insert(information);
+        }else if (information.getHid() == null || !information.getHid().equals(hid)){
+            //绑定了需要更新hid
+            information.setHid(hid);
+            informationMapper.updateById(information);
+        }
+        return information;
     }
 }

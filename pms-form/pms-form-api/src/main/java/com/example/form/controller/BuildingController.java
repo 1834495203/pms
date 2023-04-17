@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 楼栋管理
  * @author GLaDOS
@@ -31,15 +33,16 @@ public class BuildingController {
 
     /**
      * 根据id获取楼栋信息
-     * @param id id
+     * @param id 栋id
      * @return RR
      */
     @ApiOperation("根据id获取楼栋信息")
     @RequestMapping(value = "/building/{id}", method = RequestMethod.GET)
-    public RestResponse<ResultHouseDto> getBuildingInfoById(@PathVariable Integer id){
+    public RestResponse<ResultHouseDto> getBuildingInfoById(@PathVariable Integer id, HttpServletRequest request){
+        String type = request.getHeader("type");
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         IsAuth.init(authThreadLocal).or("900").start();
-        return houseService.getBuildingInfoById(id);
+        return houseService.getBuildingInfoById(id, type);
     }
 
     @ApiOperation("添加楼栋节点信息")
@@ -62,5 +65,16 @@ public class BuildingController {
     @RequestMapping(value = "/building/info/{id}", method = RequestMethod.GET)
     public RestResponse<Information> selectHouseInfoByHid(@PathVariable Integer id){
         return informationService.selectInfoByHid(id);
+    }
+
+    @ApiOperation("将业主信息与房屋信息绑定")
+    @RequestMapping(value = "/building/info", method = RequestMethod.POST)
+    public Information bindHouseInfo2Prop(@RequestParam("pid") Integer pid, @RequestParam("hid") Integer hid){
+        return informationService.bindHouseInfo2Prop(pid, hid);
+    }
+
+    @RequestMapping(value = "/building/address/info", method = RequestMethod.POST)
+    public RestResponse<ResultHouseDto> selectAssignedAddress(@RequestParam("address") String address){
+        return houseService.selectAssignedAddress(address);
     }
 }

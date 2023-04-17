@@ -33,6 +33,17 @@ public class ResultHouseDto {
     private String value;
 
     /**
+     * 展示信息的label
+     */
+    private String toDisLabel;
+
+    /**
+     * 业主id
+     * if contains
+     */
+    private String propId;
+
+    /**
      * 楼栋子节点
      */
     private List<ResultHouseDto> children;

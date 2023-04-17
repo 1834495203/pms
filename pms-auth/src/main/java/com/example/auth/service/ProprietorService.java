@@ -2,7 +2,9 @@ package com.example.auth.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.auth.dto.QueryPersonnelDto;
+import com.example.auth.dto.QueryPropDto;
 import com.example.auth.dto.ResultUserBaseInfo;
+import com.example.auth.dto.UpdatePropDto;
 import com.example.auth.po.Proprietor;
 import com.example.model.PageParams;
 import com.example.model.PageResult;
@@ -18,7 +20,7 @@ import java.util.List;
  * @author GLaDOS
  * @since 2023-03-20
  */
-public interface ProprietorService extends IService<Proprietor> {
+    public interface ProprietorService extends IService<Proprietor> {
 
     /**
      * 业主登录
@@ -63,5 +65,12 @@ public interface ProprietorService extends IService<Proprietor> {
      * 获取全部业主信息
      * @return RR
      */
-    PageResult<Proprietor> getListProprietor(PageParams pageParams, QueryPersonnelDto queryPersonnelDto);
+    PageResult<QueryPropDto> getListProprietor(PageParams pageParams, QueryPersonnelDto queryPersonnelDto);
+
+    /**
+     * 更新业主信息
+     * @param updatePropDto dto
+     * @return RR
+     */
+    RestResponse<Proprietor> updateProprietor(UpdatePropDto updatePropDto);
 }

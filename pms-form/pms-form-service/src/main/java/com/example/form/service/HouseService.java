@@ -3,6 +3,7 @@ package com.example.form.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.form.model.dto.ResultHouseDto;
 import com.example.form.model.po.House;
+import com.example.form.model.po.Information;
 import com.example.model.RestResponse;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface HouseService extends IService<House> {
      * @param id 楼栋id
      * @return RR
      */
-    RestResponse<ResultHouseDto> getBuildingInfoById(Integer id);
+    RestResponse<ResultHouseDto> getBuildingInfoById(Integer id, String type);
 
     /**
      * 添加楼栋信息
@@ -37,4 +38,11 @@ public interface HouseService extends IService<House> {
      * @return RR
      */
     RestResponse<ResultHouseDto> deleteBuildingInfo(ResultHouseDto resultHouseDto);
+
+    /**
+     * 获取指定地址
+     * @param address 地址
+     * @return RR
+     */
+    RestResponse<ResultHouseDto> selectAssignedAddress(String address);
 }

@@ -7,6 +7,14 @@
     <file url="file://$PROJECT_DIR$/pms-auth/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pms-base/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pms-base/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/pms-expense-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/pms-expense-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/pms-expense-model/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/pms-expense-model/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/pms-expense-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/pms-expense-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/pms-expense/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pms-form/pms-form-api/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pms-form/pms-form-api/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/pms-form/pms-form-model/src/main/java" charset="UTF-8" />

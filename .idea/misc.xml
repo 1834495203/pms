@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/pms-form/pom.xml" />
         <option value="$PROJECT_DIR$/pms-form/pms-form-model/pom.xml" />
         <option value="$PROJECT_DIR$/pms-personnel/pom.xml" />
+        <option value="$PROJECT_DIR$/pms-expense/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

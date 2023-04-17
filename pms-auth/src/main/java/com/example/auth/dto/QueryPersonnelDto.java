@@ -22,5 +22,5 @@ public class QueryPersonnelDto {
     /**
      * 物业缴费状态
      */
-    private String propertyExpenseState;
+    private Integer propertyExpenseState;
 }

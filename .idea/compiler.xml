@@ -16,13 +16,16 @@
         <processorPath useClasspath="false">
           <entry name="$PROJECT_DIR$/../maven/repository/org/projectlombok/lombok/1.18.8/lombok-1.18.8.jar" />
         </processorPath>
+        <module name="pms-expense-model" />
         <module name="pms-base" />
         <module name="pms-form-model" />
         <module name="pms-generator" />
         <module name="pms-form-service" />
+        <module name="pms-expense-api" />
         <module name="gateway" />
         <module name="pms-form-api" />
         <module name="pms-auth" />
+        <module name="pms-expense-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -31,6 +34,10 @@
       <module name="pms" target="1.8" />
       <module name="pms-auth" target="1.8" />
       <module name="pms-base" target="1.8" />
+      <module name="pms-expense" target="1.8" />
+      <module name="pms-expense-api" target="1.8" />
+      <module name="pms-expense-model" target="1.8" />
+      <module name="pms-expense-service" target="1.8" />
       <module name="pms-form" target="1.8" />
       <module name="pms-form-api" target="1.8" />
       <module name="pms-form-model" target="1.8" />

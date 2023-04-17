@@ -54,7 +54,7 @@ public class PictController {
 
         //type表示文件所属信息
         if (type == null)
-            throw new PMSException("没有携带指定header");
+            throw new PMSException("文件类型错误");
         RestResponse<Pict> pictRestResponse = pictService.uploadPict(file.getOriginalFilename(), path, type);
         if (temp.delete()) log.info("临时文件: {} 删除成功", file.getOriginalFilename());
         return pictRestResponse;

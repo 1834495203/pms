@@ -61,6 +61,7 @@ public class PictServiceImpl extends ServiceImpl<PictMapper, Pict> implements Pi
         if (pict == null)
             return RestResponse.validFail("没有对象！", Error.DATABASE_SELECT_FAILED);
         try{
+            pict.setObjectName(pict.getObjectName().replaceAll(FILE_URL, ""));
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
                             .bucket(bucket)

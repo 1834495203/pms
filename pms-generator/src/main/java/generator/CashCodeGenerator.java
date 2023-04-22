@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public class CashCodeGenerator {
     // TODO 修改服务名以及数据表名
-    private static final String SERVICE_NAME = "expense";
+    private static final String SERVICE_NAME = "cash";
 
     //数据库账号
     private static final String DATA_SOURCE_USER_NAME  = "root";
@@ -24,7 +24,9 @@ public class CashCodeGenerator {
     private static final String DATA_SOURCE_PASSWORD  = "123456";
     //生成的表
     private static final String[] TABLE_NAMES = new String[]{
-            "property_expense"
+            "property_expense",
+//            "expense_information",
+//            "record"
     };
 
     // TODO 默认生成entity，需要生成DTO修改此变量

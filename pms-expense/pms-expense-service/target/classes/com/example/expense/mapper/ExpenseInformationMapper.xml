@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.expense.mapper.ExpenseInformationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.expense.po.ExpenseInformation">
+        <id column="tid" property="tid" />
+        <result column="date" property="date" />
+        <result column="price" property="price" />
+        <result column="addition" property="addition" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        tid, date, price, addition
+    </sql>
+
+</mapper>

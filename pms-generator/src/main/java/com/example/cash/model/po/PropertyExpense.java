@@ -35,7 +35,7 @@ public class PropertyExpense implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 物业费的状态 未交?已交?
+     * 物业费的状态
      */
     private String state;
 
@@ -45,9 +45,14 @@ public class PropertyExpense implements Serializable {
     private String method;
 
     /**
-     * 金额
+     * 应收金额
      */
-    private BigDecimal amount;
+    private BigDecimal payableAmount;
+
+    /**
+     * 实收金额
+     */
+    private BigDecimal received;
 
 
 }

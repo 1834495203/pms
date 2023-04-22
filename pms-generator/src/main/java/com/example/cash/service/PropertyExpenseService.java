@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author GLaDOS
- * @since 2023-04-16
+ * @since 2023-04-22
  */
 public interface PropertyExpenseService extends IService<PropertyExpense> {
 

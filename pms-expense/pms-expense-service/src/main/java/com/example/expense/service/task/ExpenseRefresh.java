@@ -2,6 +2,9 @@ package com.example.expense.service.task;
 
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,12 +13,12 @@ import org.springframework.stereotype.Component;
  * @date 2023/4/16 22:36
  */
 @Slf4j
-@Component
+@EnableScheduling
+@Configuration
 public class ExpenseRefresh {
 
-
-    @XxlJob("testExpense")
-    public void testExpense(){
-        log.info("工作中...");
+    @Scheduled(cron = "1 * * * * ?")
+    private void configureTasks(){
+        log.info("执行任务中...");
     }
 }

@@ -9,12 +9,13 @@
         <result column="create_time" property="createTime" />
         <result column="state" property="state" />
         <result column="method" property="method" />
-        <result column="amount" property="amount" />
+        <result column="payable_amount" property="payableAmount" />
+        <result column="received" property="received" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        eid, payer_id, create_time, state, method, amount
+        eid, payer_id, create_time, state, method, payable_amount, received
     </sql>
 
 </mapper>

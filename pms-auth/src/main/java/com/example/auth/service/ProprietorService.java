@@ -20,7 +20,7 @@ import java.util.List;
  * @author GLaDOS
  * @since 2023-03-20
  */
-    public interface ProprietorService extends IService<Proprietor> {
+public interface ProprietorService extends IService<Proprietor> {
 
     /**
      * 业主登录

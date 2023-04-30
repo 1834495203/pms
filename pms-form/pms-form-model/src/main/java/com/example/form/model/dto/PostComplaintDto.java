@@ -20,7 +20,7 @@ public class PostComplaintDto {
      * 发送人信息
      */
     @ApiParam(value = "发送人id")
-    private Integer pubilsherId;
+        private Integer pubilsherId;
 
     /**
      * 内容

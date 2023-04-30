@@ -1,0 +1,275 @@
+# pms 物业管理系统
+## 系统描述
+本项目为本人的毕业设计。首先通过需求分析拟定角色各自的功能需求，然后通过需求绘制出系统用例图，编写用例规约。
+在项目中包括了投诉管理、公告管理、人员管理和缴费管理等小区物业基础服务。
+旨在帮助物业管理员与小区业主提供便捷的网上服务。
+项目采用了前后端分离的架构，后端采用了SpringBoot、SpringCloud技术栈开发，数据库使用了MySQL，Redis。
+使用的中间件包括xxl-job用于任务调度，MinIO用于文件管理。同时使用了Nginx进行服务器端的反向代理。
+主要的微服务分为综合表单微服务，人员管理微服务、缴费系统微服务、网关微服务等。
+而前端采用了Vue+TypeScript+Vite的模式进行开发，同时使用了ElementUI进行页面的开发。
+最后通过黑盒测试来检测系统的功能是否健全。
+
+## 涉及技术
+###前端
+- Vue
+- ElementUI
+- axios
+###后端
+- SpringBoot
+- SpringCloud
+- MyBatisPlus
+- MySQL
+- Redis
+- MinIO
+- Xxl-job
+- Nginx
+- JWT
+###代码管理
+- git
+
+##职责描述：
+1. 负责数据库的设计；
+2. 负责系统用例图、动态建模、静态建模的绘制；
+3. 负责了后端代码的编写；
+4. 负责了前端代码的编写；
+5. 负责写用例测试, 编写swagger接口档案；
+6. 负责前后端的测试，联调；
+7. 使用postman进行接口测试，使用jmeter进行压力测试
+
+---
+##数据库E-R图
+![ER图](./img/数据库.png)
+
+---
+###职责描述：
+1. 负责数据库的设计；
+2. 负责系统用例图、动态建模、静态建模的绘制；
+3. 负责了后端代码的编写；
+4. 负责了前端代码的编写；
+5. 负责写用例测试, 编写swagger接口档案；
+6. 负责前后端的测试，联调；
+7. 使用postman进行接口测试，使用jmeter进行压力测试
+---
+###资源权限识别
+- 通过反射与注解对任意实体类或是单个成员变量进行权限的鉴别
+```java
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.TYPE})
+public @interface Auth {
+    //表明该字段或者类的访问权限
+    String auth();
+    //表明对类访问时排除指定的字段
+    String[] exclude() default {};
+}
+```
+```java
+/**
+ * 在dto上添加注释, 判断字段的访问权限, 返回字段被筛选后的类
+ * 在类上添加注释, 表明该类的访问权限
+ * @param <T> 鉴权dto类
+ * @author GLaDOS
+ */
+@Component
+public class HasAuth <T> {
+
+    /**
+     * 用户权限
+     */
+    private String userAuth;
+
+    /**
+     * dto实体
+     */
+    private T entity;
+
+    /**
+     * dto类
+     */
+    private Class<T> clazz;
+
+    public HasAuth() {}
+
+    public HasAuth(String userAuth, T entity, Class<T> clazz) {
+        this.userAuth = userAuth;
+        this.entity = entity;
+        this.clazz = clazz;
+    }
+
+    public T afterAuth(){
+        return this.afterAuth(userAuth, entity, clazz);
+    }
+
+    public T afterAuth(String userAuth, T entity, Class<T> clazz){
+        try{
+            T instance = clazz.getDeclaredConstructor().newInstance();
+            String superAuth = null;
+            String[] exclude = {};
+            Auth superAnnotation;
+            if ((superAnnotation = entity.getClass().getAnnotation(Auth.class)) != null){
+                //如在类上声明
+                superAuth = superAnnotation.auth();
+                exclude = superAnnotation.exclude();
+            }
+            for (Field df : entity.getClass().getDeclaredFields()) {
+                df.setAccessible(true);
+                Auth annotation = df.getAnnotation(Auth.class);
+                Field newDf = instance.getClass().getDeclaredField(df.getName());
+                newDf.setAccessible(true);
+                if (annotation == null) newDf.set(instance, df.get(entity));
+                else if (userAuth.contains(annotation.auth()) ||
+                        superAuth != null && userAuth.contains(superAuth) &&
+                                !isContains(df.getName(), exclude))
+                    newDf.set(instance, df.get(entity));
+            }
+            return instance;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new PMSException("字段权限读取错误", Error.UNKNOWN_FAILED);
+        }
+    }
+
+    private boolean isContains(String s, String[] arr) {
+        return Arrays.asList(arr).contains(s);
+    }
+}
+```
+-封装minio文件上传
+```java
+/**
+ * 上传文件工具类
+ * @author GLaDOS
+ * @date 2023/4/1 18:22
+ */
+@Slf4j
+@Component
+public class UploadFiles {
+
+    /**
+     * 根据拓展名获取mimeType
+     * @param ex 文件后缀
+     * @return 文件类型
+     */
+    private static String getMimeType(String ex){
+        if (ex == null) ex = "";
+        ContentInfo extensionMatch = ContentInfoUtil.findExtensionMatch(ex);
+        if (extensionMatch != null)
+            return extensionMatch.getMimeType();
+        //为空则返回通用类型 字节流
+        return MediaType.APPLICATION_OCTET_STREAM_VALUE;
+    }
+
+    /**
+     * 获取文件的md5
+     * @param file 文件
+     * @return md5
+     */
+    private static String getFileMd5(File file){
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            return DigestUtil.md5Hex(fis);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            log.error("文件名转换为md5失败-------->"+e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 文件上传至minio
+     * @param filename 文件名
+     * @param localFilePath 本地路径
+     * @param bucket 桶
+     * @param minioClient minio类
+     * @return objectName
+     */
+    public String uploadFile2Minio(String filename, String localFilePath, String bucket, MinioClient minioClient){
+        //获取后缀
+        String ex = filename.substring(filename.lastIndexOf("."));
+        //得到mimeType
+        String mimeType = UploadFiles.getMimeType(ex);
+        //获取文件的md5
+        String fileMd5 = UploadFiles.getFileMd5(new File(localFilePath));
+        //文件在minio中保存的地址
+        String objectName = DateUtil.format(new Date(), "yyyy/MM/dd") + "/" + fileMd5 + ex;
+
+        //将文件上传至minio
+        try{
+            minioClient.uploadObject(
+                    UploadObjectArgs.builder()
+                            .bucket(bucket)
+                            .object(objectName)
+                            .filename(localFilePath)
+                            .contentType(mimeType)
+                            .build()
+            );
+            return objectName;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new PMSException("上传失败!", Error.UPLOAD_FILE_FAILED);
+        }
+    }
+
+    /**
+     * 上传用户头像
+     * @param filename 文件名
+     * @param localFilePath 文件地址
+     * @param mapper 用户对应的mapper对象
+     * @param bucket 桶
+     * @param instance 从数据库获取的用户类实例
+     * @param <T> mapper
+     * @param <K> 用户类
+     * @return RR
+     */
+    public <T extends BaseMapper<K>, K> RestResponse<?> uploadFile(String filename,
+                                                                   String localFilePath,
+                                                                   T mapper,
+                                                                   String bucket,
+                                                                   K instance,
+                                                                   MinioClient minioClient){
+        if (instance == null)
+            return RestResponse.validFail("没有对象!", Error.UNAUTHORIZED);
+        UploadFiles uploadFiles = new UploadFiles();
+
+        try {
+            Field profile = instance.getClass().getDeclaredField("profile");
+            profile.setAccessible(true);
+            //先判断用户是否已经有头像
+            String path;
+            if ((path = (String) profile.get(instance)) != null){
+                //先删除用户当前头像
+                minioClient.removeObject(
+                        RemoveObjectArgs.builder()
+                                .bucket(bucket)
+                                .object(path)
+                                .build()
+                );
+            }
+
+            //上传头像
+            String objectName = uploadFiles.uploadFile2Minio(filename, localFilePath, bucket, minioClient);
+
+            //将文件路径上传至db
+            profile.set(instance, objectName);
+            if (mapper.updateById(instance) == 1)
+                return RestResponse.success("success", objectName, Valid.UPLOAD_FILE_SUCCESS);
+            return RestResponse.validFail("上传失败!", Error.UPLOAD_FILE_FAILED);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new PMSException("上传失败!", Error.UPLOAD_FILE_FAILED);
+        }
+    }
+}
+```
+---
+##系统页面展示
+###主页面
+![主页面](./img/主页面.png)
+###登录页面
+![登录页面](./img/登录页面.png)
+###个人中心
+![个人中心](./img/个人中心.png)
+###投诉页面
+![投诉页面](./img/投诉页面.png)
+###投诉反馈
+![投诉反馈](./img/投诉反馈.png)

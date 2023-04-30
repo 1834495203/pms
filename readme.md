@@ -261,6 +261,142 @@ public class UploadFiles {
     }
 }
 ```
+- 将表中的profile及保存图片信息id的表转换为图片的实际地址
+```java
+/**
+ * @author GLaDOS
+ * @date 2023/4/5 18:05
+ */
+public class General {
+
+    /**
+     * 将表中的profile及保存图片信息id的表转换为图片的实际地址
+     * @param dClazz dto.class
+     * @param listDto Array(dto)
+     * @param <O> po
+     * @param <D> dto
+     */
+    public <O, D> void fillPictInfo(Class<? extends D> dClazz,
+                                       List<D> listDto, Page<O> page,
+                                       PictMapper pictMapper){
+        try{
+            //遍历获取的分页信息
+            for (O record : page.getRecords()) {
+                //实例化一个dto
+                D result = dClazz.getDeclaredConstructor().newInstance();
+                //获取result的objectName变量
+                Field objectName = result.getClass().getDeclaredField("objectName");
+                objectName.setAccessible(true);
+                //将单个分页信息拷贝到dto中
+                BeanUtil.copyProperties(record, result);
+                //获取单个分页信息的profile变量与id变量
+                Field profile = record.getClass().getDeclaredField("profile");
+                Field id = Arrays.stream(record.getClass().getDeclaredFields()).filter(field -> field.getName().contains("id")).findFirst().orElse(null);
+                if (id != null)
+                    id.setAccessible(true);
+                profile.setAccessible(true);
+                String profiles = (String) profile.get(record);
+                if (profiles != null){
+                    ArrayList<String> names = new ArrayList<>();
+                    for (String s : profiles.split(",")) {
+                        //获取对应的pict信息
+                        Pict pict = pictMapper.selectById(s);
+                        //将图片信息写入结果
+                        names.add(pict.getObjectName());
+                        //设置图片信息对应的ProfileId
+                        if (pict.getProfileId() == null && id != null){
+                            pict.setProfileId((Integer) id.get(record));
+                        }
+                        pictMapper.updateById(pict);
+                    }
+                    objectName.set(result, names);
+                }
+                listDto.add(result);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new PMSException("无法获取pict对应信息");
+        }
+    }
+}
+```
+- 查询树形结构的楼栋信息表
+**SQL语句**
+```mysql
+with recursive t1 as (
+    select p.* from house p where p.hid = #{id}
+    union all
+    select p1.* from house p1 inner join t1 on t1.hid = p1.parent
+)
+select * from t1 order by t1.parent
+```
+**Java语句**
+```java
+/**
+ * <p>
+ *  服务实现类
+ * </p>
+ *
+ * @author GLaDOS
+ */
+@Slf4j
+@Service
+public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements HouseService {
+
+    @Autowired
+    private HouseMapper houseMapper;
+
+    @Override
+    public RestResponse<ResultHouseDto> getBuildingInfoById(Integer id, String type) {
+        Integer parent = 0;
+        Map<Integer, List<ResultHouseDto>> houseDtoHashMap = new LinkedHashMap<>();
+        ArrayList<ResultHouseDto> resultHouseDto = new ArrayList<>();
+        List<House> houseInfoByOrder = houseMapper.getHouseInfoByOrder(id);
+
+        if (houseInfoByOrder == null)
+            return RestResponse.validFail("没有对象", Error.DATABASE_SELECT_FAILED);
+        try {
+            for (House house : houseInfoByOrder) {
+                //遍历全部对象
+                if (!house.getParent().equals(parent)) {
+                    //当单个对象的父节点不等于parent时将resultHouseDto保存在map中并新引用一个resultHouseDto
+                    houseDtoHashMap.put(parent, resultHouseDto);
+                    resultHouseDto = new ArrayList<>();
+                    parent = house.getParent();
+                }
+                ResultHouseDto temp = new ResultHouseDto();
+                BeanUtil.copyProperties(house, temp);
+                temp.setToDisLabel(temp.getValue() + temp.getLabel());
+                resultHouseDto.add(temp);
+            }
+            if (resultHouseDto.size() > 0)
+                houseDtoHashMap.put(parent, resultHouseDto);
+
+            List<Integer> collect = new ArrayList<>(houseDtoHashMap.keySet());
+            Collections.reverse(collect);
+
+            //类似冒泡排序
+            for (int i = 0; i < collect.size(); i++) {
+                for (int j = i + 1; j < collect.size(); j++) {
+                    for (ResultHouseDto houseDto : houseDtoHashMap.get(collect.get(j))) {
+                        if (collect.get(i).equals(houseDto.getHid())) {
+                            houseDto.setChildren(houseDtoHashMap.get(collect.get(i)));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            ResultHouseDto finalResult = houseDtoHashMap.get(0).get(0);
+            finalResult.setLastId(houseMapper.getHouseLastId());
+            return RestResponse.success(finalResult, "查询成功", Valid.DATABASE_SELECT_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new PMSException("获取楼栋信息失败", Error.DATABASE_SELECT_FAILED);
+        }
+    }
+}
+```
 ---
 ## 系统页面展示
 ### 主页面

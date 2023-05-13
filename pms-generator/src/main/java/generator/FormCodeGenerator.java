@@ -27,10 +27,10 @@ public class FormCodeGenerator {
 //            "broadcast",
 //            "complaint",
 //            "facility",
-//            "repair",
+            "repair",
 //            "pict",
-            "house",
-            "information"
+//            "house",
+//            "information"
     };
 
     // TODO 默认生成entity，需要生成DTO修改此变量

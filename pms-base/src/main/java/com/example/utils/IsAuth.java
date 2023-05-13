@@ -43,10 +43,34 @@ public class IsAuth {
         return isAuth;
     }
 
+    public IsAuth not(String ...auth){
+        //只要条件中有一个是的话, 则抛出未授权
+        if (auth.length == 0) return isAuth;
+        for (String s : auth) {
+            if (userAuth.contains(s)) {
+                decide = false;
+                break;
+            }
+        }
+        return isAuth;
+    }
+
     public IsAuth or(String auth){
         //只要条件中有一个是的话, 则不抛出未授权
         if (decide) return isAuth;
         if (userAuth.contains(auth)) decide = true;
+        return isAuth;
+    }
+
+    public IsAuth or(String ...auth){
+        if (auth.length == 0) return isAuth;
+        //只要条件中有一个是的话, 则不抛出未授权
+        if (decide) return isAuth;
+        for (String s : auth)
+            if (userAuth.contains(s)) {
+                decide = true;
+                break;
+            }
         return isAuth;
     }
 

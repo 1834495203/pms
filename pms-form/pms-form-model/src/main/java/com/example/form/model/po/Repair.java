@@ -6,11 +6,12 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- * 维修信息
+ * 
  * </p>
  *
  * @author GLaDOS
@@ -63,9 +64,14 @@ public class Repair implements Serializable {
     private LocalDateTime solvedTime;
 
     /**
-     * 设施id
+     * 设施类型
      */
-    private Integer facilityId;
+    private String type;
+
+    /**
+     * 预约时间
+     */
+    private LocalDate appointment;
 
 
 }

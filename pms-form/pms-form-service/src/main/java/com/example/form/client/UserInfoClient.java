@@ -1,5 +1,6 @@
 package com.example.form.client;
 
+import com.example.form.client.callback.UserClientCallback;
 import com.example.form.model.dto.ResultUserBaseInfo;
 import com.example.model.RestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author GLaDOS
  * @date 2023/4/5 21:49
  */
-@FeignClient(value = "auth-service")
+@FeignClient(value = "auth-service", fallbackFactory = UserClientCallback.class)
 public interface UserInfoClient {
 
     /**

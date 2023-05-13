@@ -1,6 +1,7 @@
 package com.example.form.model.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import java.time.LocalDate;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -62,9 +63,14 @@ public class Repair implements Serializable {
     private LocalDateTime solvedTime;
 
     /**
-     * 设施id
+     * 设施类型
      */
-    private Integer facilityId;
+    private String type;
+
+    /**
+     * 预约时间
+     */
+    private LocalDate appointment;
 
 
 }

@@ -1,6 +1,6 @@
-package com.example.form.service;
+package com.example.form.model.po.service;
 
-import com.example.form.model.po.Complaint;
+import com.example.form.model.po.House;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author GLaDOS
  * @since 2023-04-09
  */
-public interface ComplaintService extends IService<Complaint> {
+public interface HouseService extends IService<House> {
 
 }

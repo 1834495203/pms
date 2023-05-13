@@ -3,6 +3,7 @@ package com.example.form.controller;
 import com.example.config.AuthThreadLocal;
 import com.example.exception.Error;
 import com.example.exception.PMSException;
+import com.example.form.config.auth.WithAuth;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
 import com.example.form.model.dto.ResultComplaintDto;
@@ -75,6 +76,7 @@ public class ComplaintController {
      * @param queryComplaintDto 查询条件
      * @return 分页数据
      */
+    @WithAuth(orAuth = {"900", "910"})
     @ApiOperation("根据指定条件返回投诉信息")
     @RequestMapping(value = "/complaint/query/{pageNo}", method = RequestMethod.POST)
     public PageResult<ResultComplaintDto> getComplaint(@RequestBody QueryComplaintDto queryComplaintDto,

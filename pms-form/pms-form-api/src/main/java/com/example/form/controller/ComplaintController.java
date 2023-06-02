@@ -1,9 +1,7 @@
 package com.example.form.controller;
 
 import com.example.config.AuthThreadLocal;
-import com.example.exception.Error;
-import com.example.exception.PMSException;
-import com.example.form.config.auth.WithAuth;
+import com.example.form.advice.WithAuth;
 import com.example.form.model.dto.PostComplaintDto;
 import com.example.form.model.dto.QueryComplaintDto;
 import com.example.form.model.dto.ResultComplaintDto;
@@ -20,10 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

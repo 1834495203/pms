@@ -45,4 +45,11 @@ public interface HouseService extends IService<House> {
      * @return RR
      */
     RestResponse<ResultHouseDto> selectAssignedAddress(String address);
+
+    /**
+     * 根据门牌号获取房产信息
+     * @param doorplate 门牌号
+     * @return 信息
+     */
+    Information getHouseInfoByDoorPlate(String doorplate);
 }

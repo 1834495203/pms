@@ -72,7 +72,6 @@ public class AlterUserController {
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         IsAuth.init(authThreadLocal).or("900").start();
         log.info(updatePropDto.toString());
-        log.info(updatePropDto.getAddress().split(",")[3]);
         return proprietorService.updateProprietor(updatePropDto);
     }
 }

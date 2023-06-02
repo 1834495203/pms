@@ -9,11 +9,12 @@
         <result column="hid" property="hid" />
         <result column="state" property="state" />
         <result column="pid" property="pid" />
+        <result column="doorplate" property="doorplate"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        iid, area, hid, state, pid
+        iid, area, hid, state, pid, doorplate
     </sql>
 
 </mapper>

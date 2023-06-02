@@ -12,12 +12,13 @@
         <result column="in_charge_id" property="inChargeId" />
         <result column="profile" property="profile" />
         <result column="solved_time" property="solvedTime" />
-        <result column="facility_id" property="facilityId" />
+        <result column="type" property="type" />
+        <result column="appointment" property="appointment" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        rid, content, state, create_time, pubilsher_id, in_charge_id, profile, solved_time, facility_id
+        rid, content, state, create_time, pubilsher_id, in_charge_id, profile, solved_time, type, appointment
     </sql>
 
 </mapper>

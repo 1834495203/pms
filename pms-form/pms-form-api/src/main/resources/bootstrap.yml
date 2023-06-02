@@ -31,6 +31,9 @@ spring:
           - data-id: jwt-${spring.profiles.active}.yaml
             group: common
             refresh: true
+          - data-id: redis-${spring.profiles.active}.yaml
+            group: common
+            refresh: true
       discovery:
         namespace: mahiro
         group: mahiro

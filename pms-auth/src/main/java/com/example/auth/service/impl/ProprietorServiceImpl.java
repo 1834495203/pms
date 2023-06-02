@@ -33,6 +33,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -149,7 +150,7 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
             ArrayList<Integer> address = new ArrayList<>();
             if (record.getAddress() != null)
                 for (String s : record.getAddress().split(",")) {
-                    if (s != null)
+                    if (!Objects.equals(s, ""))
                         address.add(Integer.valueOf(s));
                 }
             queryProp.setAddressList(address);
@@ -161,11 +162,30 @@ public class ProprietorServiceImpl extends ServiceImpl<ProprietorMapper, Proprie
     @Override
     public RestResponse<Proprietor> updateProprietor(UpdatePropDto updatePropDto) {
         Proprietor proprietor = new Proprietor();
+        String address;
         BeanUtil.copyProperties(updatePropDto, proprietor);
         if (proprietorMapper.updateById(proprietor) == 1){
-            prop2House.bindHouseInfo2Prop(updatePropDto.getPid(), Integer.valueOf(updatePropDto.getAddress().split(",")[3]));
+            if (!Objects.equals(address = updatePropDto.getAddress(), ""))
+                prop2House.bindHouseInfo2Prop(updatePropDto.getPid(), Integer.valueOf(address.split(",")[3]));
             return RestResponse.success(proprietor, "更新成功", Valid.DATABASE_UPDATE_SUCCESS);
         }
         return RestResponse.validFail("更新失败", Error.DATABASE_UPDATE_FAILED);
+    }
+
+    @Override
+    @Transactional
+    public void alterExpenseState() {
+        LambdaQueryWrapper<Proprietor> wrapper = new LambdaQueryWrapper<>();
+        for (Integer pid : proprietorMapper.selectCount()) {
+            Integer state;
+            wrapper.eq(Proprietor::getPid, pid);
+            Proprietor proprietor = proprietorMapper.selectOne(wrapper);
+            //如果为已缴费
+            if ((state = proprietor.getPropertyExpenseState()).equals(10011))
+                proprietor.setPropertyExpenseState(10010);
+            else if (state <= 10010) //若为未缴费或已欠费
+                proprietor.setPropertyExpenseState(--state);
+            proprietorMapper.updateById(proprietor);
+        }
     }
 }

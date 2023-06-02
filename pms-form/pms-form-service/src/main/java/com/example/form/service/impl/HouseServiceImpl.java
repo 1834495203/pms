@@ -138,4 +138,14 @@ public class HouseServiceImpl extends ServiceImpl<HouseMapper, House> implements
         log.info(finalResult.toString());
         return RestResponse.success(finalResult, "获取成功", Valid.DATABASE_SELECT_SUCCESS);
     }
+
+    @Override
+    public Information getHouseInfoByDoorPlate(String doorplate) {
+        LambdaQueryWrapper<Information> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Information::getDoorplate, doorplate);
+        Information information = informationMapper.selectOne(wrapper);
+        if (information == null)
+            throw new PMSException("该门牌暂无业主居住", Error.NO_SUCH_USER);
+        return information;
+    }
 }

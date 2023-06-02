@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.auth.po.Proprietor;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -14,4 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ProprietorMapper extends BaseMapper<Proprietor> {
 
+    String selectNameById(Integer pid);
+
+    List<Integer> selectCount();
 }

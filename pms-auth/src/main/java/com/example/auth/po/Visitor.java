@@ -62,5 +62,8 @@ public class Visitor implements Serializable {
      */
     private LocalDateTime leavingTime;
 
-
+    /**
+     * 预计离开时间
+     */
+    private LocalDateTime requiredLeavingTime;
 }

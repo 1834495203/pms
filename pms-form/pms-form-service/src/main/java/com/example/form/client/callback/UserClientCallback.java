@@ -2,8 +2,11 @@ package com.example.form.client.callback;
 
 import com.example.form.client.UserInfoClient;
 import com.example.form.model.dto.ResultUserBaseInfo;
+import com.example.form.model.po.Visitor;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author GLaDOS
@@ -26,6 +29,11 @@ public class UserClientCallback implements FallbackFactory<UserInfoClient> {
                 ResultUserBaseInfo rub = new ResultUserBaseInfo();
                 rub.setUsername("被限流了...");
                 return rub;
+            }
+
+            @Override
+            public List<Visitor> getVisitorByDoorplate(String doorplate) {
+                return null;
             }
         };
     }

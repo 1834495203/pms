@@ -11,6 +11,7 @@ import com.example.model.RestResponse;
 import com.example.model.UserThreadLocalDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author GLaDOS
  * @date 2023/4/9 22:35
  */
+@Slf4j
 @Api(value = "楼栋管理", tags = "楼栋管理")
 @RestController
 public class BuildingController {
@@ -32,7 +34,7 @@ public class BuildingController {
     private InformationService informationService;
 
     /**
-     * 根据id获取楼栋信息
+     * 根据栋id获取楼栋信息
      * @param id 栋id
      * @return RR
      */
@@ -43,6 +45,12 @@ public class BuildingController {
         ThreadLocal<UserThreadLocalDto> authThreadLocal = AuthThreadLocal.getAuthThreadLocal();
         IsAuth.init(authThreadLocal).or("900").start();
         return houseService.getBuildingInfoById(id, type);
+    }
+
+    @ApiOperation("根据门牌号获取房产信息")
+    @RequestMapping(value = "/building/door/{doorplate}", method = RequestMethod.GET)
+    public Information getHouseInfoByDoorPlate(@PathVariable String doorplate){
+        return houseService.getHouseInfoByDoorPlate(doorplate);
     }
 
     @ApiOperation("添加楼栋节点信息")

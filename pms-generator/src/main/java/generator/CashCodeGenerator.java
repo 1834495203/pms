@@ -24,9 +24,10 @@ public class CashCodeGenerator {
     private static final String DATA_SOURCE_PASSWORD  = "123456";
     //生成的表
     private static final String[] TABLE_NAMES = new String[]{
-            "property_expense",
+//            "property_expense",
 //            "expense_information",
-//            "record"
+//            "record"，
+            "expense_time"
     };
 
     // TODO 默认生成entity，需要生成DTO修改此变量

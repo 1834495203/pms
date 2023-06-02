@@ -43,5 +43,8 @@ public class Information implements Serializable {
      */
     private Integer pid;
 
-
+    /**
+     * 门牌号
+     */
+    private String doorplate;
 }

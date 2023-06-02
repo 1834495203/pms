@@ -25,4 +25,12 @@
         pid, username, password, name, phone, age, address, status, check_in_date, id_card, profile, gender, property_expense_state, create_date
     </sql>
 
+    <select id="selectNameById" resultType="java.lang.String">
+        select name from proprietor where pid = #{pid}
+    </select>
+
+    <select id="selectCount" resultType="java.util.List">
+        select pid from proprietor
+    </select>
+
 </mapper>

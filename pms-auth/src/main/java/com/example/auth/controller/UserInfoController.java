@@ -91,4 +91,13 @@ public class UserInfoController {
         IsAuth.init(authThreadLocal).or("900").start();
         return proprietorService.getListProprietor(pageParams, queryPersonnelDto);
     }
+
+    /**
+     * 修改用户状态
+     */
+    @ApiOperation("修改状态")
+    @RequestMapping(value = "/info/alterState", method = RequestMethod.GET)
+    public void alterExpenseState(){
+        proprietorService.alterExpenseState();
+    }
 }

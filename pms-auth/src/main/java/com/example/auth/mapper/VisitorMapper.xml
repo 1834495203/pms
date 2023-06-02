@@ -12,11 +12,12 @@
         <result column="license_plate" property="licensePlate" />
         <result column="gender" property="gender" />
         <result column="leaving_time" property="leavingTime" />
+        <result column="required_leaving_time" property="requiredLeavingTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        vid, name, required_doorplate, required_time, state, license_plate, gender, leaving_time
+        vid, name, required_doorplate, required_time, state, license_plate, gender, leaving_time, required_leaving_time
     </sql>
 
 </mapper>

@@ -17,3 +17,4 @@ spring:
           - data-id: feign-${spring.profiles.active}.yaml
             group: common
             refresh: true
+      server-addr: localhost:8848

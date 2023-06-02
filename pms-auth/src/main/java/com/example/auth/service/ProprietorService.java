@@ -73,4 +73,9 @@ public interface ProprietorService extends IService<Proprietor> {
      * @return RR
      */
     RestResponse<Proprietor> updateProprietor(UpdatePropDto updatePropDto);
+
+    /**
+     * 修改用户的缴费状态
+     */
+    void alterExpenseState();
 }
